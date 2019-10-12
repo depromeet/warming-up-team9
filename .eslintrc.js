@@ -61,7 +61,6 @@ module.exports = {
       },
     ],
 
-    '@typescript-eslint/no-object-literal-type-assertion': 'warn',
     '@typescript-eslint/camelcase': ['error', { properties: 'never', ignoreDestructuring: true }],
     '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     '@typescript-eslint/member-ordering': [
