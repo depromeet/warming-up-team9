@@ -1,16 +1,16 @@
 import React, { Fragment, Component } from 'react';
-import LoginForm from '../../components/LoginForm';
+import SignUpForm from '../../components/SignUpForm';
 import Hero from '../../components/Hero';
 
-class Login extends Component {
+class SignUp extends Component {
   render() {
     return (
       <Fragment>
-        <LoginForm />
+        <SignUpForm />
         <Hero />
       </Fragment>
     );
   }
 }
 
-export default Login;
+export default SignUp;
