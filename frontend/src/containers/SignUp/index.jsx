@@ -6,7 +6,9 @@ const SignUp = () => {
   return (
     <Fragment>
       <SignUpForm />
-      <Hero />
+      <Hero
+        back = { false }
+      />
     </Fragment>
   );
 }

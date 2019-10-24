@@ -33,7 +33,11 @@ class SignUpForm extends Component {
             <span>회원가입 조항에 동의하십니까?</span>
           </div>
         </div>
-        <Button />
+        <div className={cx('sign-btn')}>
+          <Button 
+            children = "회원가입"
+          />
+        </div>
       </div>
     );
   }
