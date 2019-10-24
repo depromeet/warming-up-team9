@@ -6,5 +6,28 @@
   top: 0;
   right: 0;
   background-color: #fff;
-  color: gray;
+  font-weight: 300;
+
+  p{
+    font-size: 30px;
+    line-height: 1.47;
+    letter-spacing: -1.13px;
+    color: #656565;
+    text-align: center;
+    margin: 50px 0;
+    margin-top: 130px;
+  }
+  .form-contents{
+    width: 66%;
+    margin: 20px auto;
+
+    .assent{
+      color: #9f9f9f;
+
+      span{
+      font-size: 14px;
+      line-height: 1.5;
+      }
+    }
+  }
 }
