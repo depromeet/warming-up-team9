@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/app.js",
   "scripts": {
     "build": "npm run build-ts && npm run lint",
     "build-ts": "./node_modules/.bin/tsc --build tsconfig.json",
