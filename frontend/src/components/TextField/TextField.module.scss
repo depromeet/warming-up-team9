@@ -2,6 +2,15 @@
     position: relative;
     margin-bottom: 30px;
     
+    .error{
+      position: absolute;
+      right: 10px;
+      border : 1px solid #ff9300;
+      border-radius: 16px;
+      padding : 3px 7px;
+      color : #ff9300;
+      font-size: 8px;
+    }
     .label{
       color: #9f9f9f;
       font-size: 14px;

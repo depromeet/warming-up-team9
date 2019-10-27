@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
-import SignUpForm from '../../components/SignUpForm';
+import SignUpFormContainer from './SignUpFormContainer';
 import Hero from '../../components/Hero';
 
 const SignUp = () => {
   return (
     <Fragment>
-      <SignUpForm />
+      <SignUpFormContainer />
       <Hero
         back = { false }
       />
