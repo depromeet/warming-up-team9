@@ -8,11 +8,11 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 6,
+    ecmaFeatures: { jsx: true },
     jsx: true,
     useJSXTextNode: true,
     sourceType: 'module',
-    tsconfigRootDir: '.',
-    project: 'tsconfig.json',
+    tsconfigRootDir: '.'
   },
   extends: [
     'eslint:recommended',
