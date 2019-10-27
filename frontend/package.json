@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "@jjayojjayo/frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -9,14 +9,16 @@
     "@types/node": "12.7.12",
     "@types/react": "16.9.5",
     "@types/react-dom": "16.9.1",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
+    "immer": "^4.0.2",
+    "react": "16.8.3",
+    "react-dom": "16.8.3",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "redux": "^4.0.4",
     "redux-observable": "^1.2.0",
     "rxjs": "^6.5.3",
+    "typesafe-actions": "^4.4.2",
     "typescript": "3.6.4"
   },
   "scripts": {
@@ -41,9 +43,10 @@
     ]
   },
   "devDependencies": {
+    "@types/react-redux": "^7.1.5",
     "@types/react-router-dom": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^2.3.3",
-    "@typescript-eslint/parser": "^2.3.3",
+    "@typescript-eslint/parser": "^2.5.0",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
     "eslint-import-resolver-typescript": "^2.0.0",
