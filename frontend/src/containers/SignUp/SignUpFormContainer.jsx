@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SignUpForm from '../../components/SignUpForm';
-// import * as authAction from 'App/store/modules/auth';
+// import * as authAction from '../store/modules/auth';
 import FormValidator from './FormValidator';
 
 class SignUpFormContainer extends Component {
@@ -113,4 +113,9 @@ class SignUpFormContainer extends Component {
 // })
 
 export default SignUpFormContainer;
+
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(SignUpFormContainer);
 
