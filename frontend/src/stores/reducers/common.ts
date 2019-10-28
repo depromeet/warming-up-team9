@@ -6,6 +6,7 @@ import { generateStorage } from '../../utils';
 import { Actions, checkAuthAction } from '../actions';
 
 export interface CommonState {
+  readonly isInitialized: boolean;
   readonly isCheckingAuth: boolean;
   readonly authToken: string | null;
   readonly user: User | null;
@@ -15,7 +16,8 @@ export function createInitialCommonState(): CommonState {
   const storage = generateStorage();
 
   return {
-    isCheckingAuth: false,
+    isInitialized: false,
+    isCheckingAuth: true,
     authToken: storage.get(AUTH_TOKEN_STORAGE_KEY),
     user: null,
   };
@@ -29,6 +31,7 @@ export const commonReducer = createReducer<CommonState, Actions>(createInitialCo
   })
   .handleAction(checkAuthAction.success, (state, action) => {
     return produce(state, draft => {
+      draft.isInitialized = true;
       draft.isCheckingAuth = false;
 
       if (action.payload.isAuthenticated) {
@@ -38,6 +41,7 @@ export const commonReducer = createReducer<CommonState, Actions>(createInitialCo
   })
   .handleAction(checkAuthAction.failure, state => {
     return produce(state, draft => {
+      draft.isInitialized = true;
       draft.isCheckingAuth = false;
     });
   });
