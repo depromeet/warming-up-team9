@@ -1,3 +1,4 @@
+import "source-map-support/register";
 import express from "express";
 import logger from "morgan";
 import * as middlewares from "./middlewares";
