@@ -1,14 +1,13 @@
-import React, { ComponentClass, FunctionComponent } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
-import { Actions } from './actions';
 import { rootEpic } from './epics';
-import { rootReducer, State } from './reducers';
+import { rootReducer } from './reducers';
 
-const epicMiddleware = createEpicMiddleware<Actions, Actions, State>();
+const epicMiddleware = createEpicMiddleware();
 
-const id = function<T>(x: T) {
+const id = function(x) {
   return x;
 };
 
@@ -17,15 +16,15 @@ const withDevTools = (() => {
     return id;
   }
 
-  return (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || id;
+  return window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || id;
 })();
 
-export function withStore(Component: ComponentClass | FunctionComponent) {
+export function withStore(Component) {
   const store = createStore(rootReducer, undefined, withDevTools(applyMiddleware(epicMiddleware)));
 
   epicMiddleware.run(rootEpic);
 
-  function ComponentWithStore({ ...props }: any) {
+  function ComponentWithStore({ ...props }) {
     return (
       <Provider store={store}>
         <Component {...props} />
