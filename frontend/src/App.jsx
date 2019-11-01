@@ -6,23 +6,21 @@ import Login from './containers/Login';
 import { createBrowserHistory } from 'history';
 import Main from './containers/Main';
 import SignUp from './containers/SignUp';
-
-import { withStore } from './stores';
 import { checkAuthAction } from './stores/actions';
-import { State } from './stores/reducers';
+import { withStore } from './stores';
 
 const history = createBrowserHistory({ basename: '/' });
 
 function App() {
   const dispatch = useDispatch();
 
-  const isInitialized = useSelector((state: State) => state.common.isInitialized);
-  const showLoading = useSelector((state: State) => state.common.isCheckingAuth);
-  const user = useSelector((state: State) => state.common.user);
+  const isInitialized = useSelector(state => state.common.isInitialized);
+  const showLoading = useSelector(state => state.common.isCheckingAuth);
+  const user = useSelector(state => state.common.user);
 
   useEffect(() => {
     if (!isInitialized) {
-      dispatch(checkAuthAction.request());
+      dispatch(checkAuthAction());
     }
   }, [isInitialized, dispatch]);
 
