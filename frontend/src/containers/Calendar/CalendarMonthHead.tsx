@@ -24,7 +24,7 @@ const MonthHead = styled.thead`
 
   & > tr {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     height: ${HEAD_SIZE}px;
 
     & > td {
