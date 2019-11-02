@@ -3,7 +3,7 @@ import classnames from 'classnames/bind';
 import styles from './TextField.module.scss';
 const cx = classnames.bind(styles);
 
-const TextField = ({ label, value, required, error, ...rest }) => {
+const TextField = ({ label, value, error, ...rest }) => {
   return (
     <div className={cx('label-input')}>
       {
