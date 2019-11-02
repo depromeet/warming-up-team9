@@ -5,23 +5,46 @@ import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import Login from './containers/Login';
 import { createBrowserHistory } from 'history';
 import Main from './containers/Main';
-import { checkAuthAction } from './stores/actions';
+import { fetchUser } from './remotes/api';
 import { withStore } from './stores';
+import { selectAuthToken, selectIsCheckingAuth, selectIsCommonInitialized, selectUser } from './stores/selectors';
+import { checkAuthRequestAction, checkAuthResponseAction } from './stores/actions';
 
 const history = createBrowserHistory({ basename: '/' });
+
+async function getUserData(authToken) {
+  if (!authToken) {
+    return null;
+  }
+
+  try {
+    return await fetchUser();
+  } catch {
+    return null;
+  }
+}
 
 function App() {
   const dispatch = useDispatch();
 
-  const isInitialized = useSelector(state => state.common.isInitialized);
-  const showLoading = useSelector(state => state.common.isCheckingAuth);
-  const user = useSelector(state => state.common.user);
+  const isInitialized = useSelector(selectIsCommonInitialized);
+  const authToken = useSelector(selectAuthToken);
+  const showLoading = useSelector(selectIsCheckingAuth);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     if (!isInitialized) {
-      dispatch(checkAuthAction());
+      dispatch(checkAuthRequestAction());
+
+      getUserData(authToken).then(user => {
+        if (user == null) {
+          dispatch(checkAuthResponseAction({ isAuthenticated: false }));
+        } else {
+          dispatch(checkAuthResponseAction({ isAuthenticated: true, user }));
+        }
+      });
     }
-  }, [isInitialized, dispatch]);
+  }, [authToken, isInitialized, dispatch]);
 
   if (showLoading) {
     // TODO: 로딩 애니메이션 필요

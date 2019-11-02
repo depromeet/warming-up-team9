@@ -1,11 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
-import { createEpicMiddleware } from 'redux-observable';
-import { rootEpic } from './epics';
+import { createStore } from 'redux';
 import { rootReducer } from './reducers';
-
-const epicMiddleware = createEpicMiddleware();
 
 const id = function(x) {
   return x;
@@ -20,9 +16,7 @@ const withDevTools = (() => {
 })();
 
 export function withStore(Component) {
-  const store = createStore(rootReducer, undefined, withDevTools(applyMiddleware(epicMiddleware)));
-
-  epicMiddleware.run(rootEpic);
+  const store = createStore(rootReducer, undefined, withDevTools());
 
   function ComponentWithStore({ ...props }) {
     return (
