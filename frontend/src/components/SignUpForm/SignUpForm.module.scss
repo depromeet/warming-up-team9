@@ -1,5 +1,5 @@
 .sign-box{
-  width: 31vw;
+  width: 40vw;
   height: 100vh;
   overflow: hidden;
   position: absolute;
@@ -7,31 +7,34 @@
   right: 0;
   background-color: #fff;
   font-weight: 300;
+  padding-right: 50px;
 
+  .request-error{
+    position: relative;
+    width: max-content;
+    top: 23px;
+    border: 1px solid #ff9300;
+    border-radius: 16px;
+    padding: 3px 7px;
+    color: #ff9300;
+    font-size: 8px;
+  }
   p{
     font-size: 30px;
+    font-weight: bold;
     line-height: 1.47;
     letter-spacing: -1.13px;
     color: #656565;
     text-align: center;
-    margin: 50px 0;
-    margin-top: 120px;
+    margin: 70px 0;
+    margin-top: 100px;
   }
   .form-contents{
-    width: 66%;
+    width: 60%;
     margin: 20px auto;
-
-    .assent{
-      color: #9f9f9f;
-
-      span{
-      font-size: 14px;
-      line-height: 1.5;
-      }
-    }
   }
   .sign-btn{
     text-align: center;
-    margin-top: 50px;
+    margin-top: 40px;
   }
 }

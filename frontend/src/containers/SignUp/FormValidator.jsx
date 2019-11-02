@@ -1,13 +1,15 @@
 import validator from 'validator';
 
 class FormValidator{
-  constructor(validationRules){
-    this.validationRules = validationRules
+  constructor(validations){
+    this.validations = validations
   }
-  validate(state){
-    const validation = this.makeValidResult();
 
-    this.validationRules.forEach(rule => {
+  validate(state){
+
+    const validation = this.validResult();
+
+    this.validations.forEach(rule => {
       if(!validation[rule.field].isInvalid){
       const field_value = state[rule.field].toString();
       const args = rule.args || [];
@@ -16,18 +18,20 @@ class FormValidator{
         validator[rule.method] :
         rule.method 
 
-      if(validation_method(field_value, ...args, state) !== rule.validWhen){
+      if(validation_method(field_value, ...args, state) !== rule.formValid){
           validation[rule.field] = { isInvalid : true, message : rule.message};
           validation.isValid = false
         }
       }
     })
+
     return validation;
   }
 
-  makeValidResult(){
+  // 각각의 입력 값이 false면 message
+  validResult(){
     const validation = {};
-    this.validationRules.forEach( rule => {
+    this.validations.forEach( rule => {
       validation[rule.field] = { isInvalid : false, message: '' }
     });
     return { isValid : true , ...validation  };
