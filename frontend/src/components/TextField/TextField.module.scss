@@ -1,0 +1,30 @@
+.label-input{
+    position: relative;
+    margin-bottom: 30px;
+    
+    .error{
+      position: absolute;
+      right: 10px;
+      border : 1px solid #ff9300;
+      border-radius: 16px;
+      padding : 3px 7px;
+      color : #ff9300;
+      font-size: 8px;
+    }
+    .label{
+      color: #61676f;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    input{
+      width: 24vw;
+      height: 40px;
+      border: 0;
+      border-radius: 10px;
+      background-color: #f6f7f9;
+      outline: 0;
+      font-size: 15px;
+      padding-left: 16px;
+    }
+  }

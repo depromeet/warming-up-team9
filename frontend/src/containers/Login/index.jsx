@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import LoginForm from '../../components/LoginForm';
+import Hero from '../../components/Hero';
 
-export default class Login extends React.Component {
-  render() {
-    return <div>Login</div>;
-  }
+const Login = () => {
+    return (
+      <Fragment>
+        <LoginForm />
+        <Hero 
+          back = { true }
+        />
+      </Fragment>
+    );
 }
+
+export default Login;

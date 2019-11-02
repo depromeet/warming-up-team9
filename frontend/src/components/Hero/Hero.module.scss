@@ -1,0 +1,28 @@
+.back{
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: #f4f4f4;
+  color: #9f9f9f;
+  z-index: -999;
+  font-weight: 300;
+
+  .back-contents{
+    width: 300px;
+    position: relative;
+    top: 43%;
+    left: 35%;
+    transform: translateX(-50%);
+    text-align: center;
+
+    p{
+      font-size: 40px;
+      line-height: 1.48;
+      letter-spacing: -1.25px;
+      padding-bottom: 10px;
+    }
+    span{
+      font-size: 14px;;
+    }
+  }
+}

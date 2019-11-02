@@ -5,6 +5,7 @@ import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import Login from './containers/Login';
 import { createBrowserHistory } from 'history';
 import Main from './containers/Main';
+import SignUp from './containers/SignUp';
 import { fetchUser } from './remotes/api';
 import { withStore } from './stores';
 import { selectAuthToken, selectIsCheckingAuth, selectIsCommonInitialized, selectUser } from './stores/selectors';
@@ -60,9 +61,13 @@ function App() {
         <Route exact={true} path="/">
           {user != null ? <Main /> : <Redirect to="/login" />}
         </Route>
+        <Route exact={true} path="/signup">
+          <SignUp />
+        </Route>
       </Switch>
     </Router>
   );
 }
 
 export default withStore(App);
+

@@ -1,0 +1,40 @@
+.sign-box{
+  width: 40vw;
+  height: 100vh;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  font-weight: 300;
+  padding-right: 50px;
+
+  .request-error{
+    position: relative;
+    width: max-content;
+    top: 23px;
+    border: 1px solid #ff9300;
+    border-radius: 16px;
+    padding: 3px 7px;
+    color: #ff9300;
+    font-size: 8px;
+  }
+  p{
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1.47;
+    letter-spacing: -1.13px;
+    color: #656565;
+    text-align: center;
+    margin: 70px 0;
+    margin-top: 100px;
+  }
+  .form-contents{
+    width: 60%;
+    margin: 20px auto;
+  }
+  .sign-btn{
+    text-align: center;
+    margin-top: 40px;
+  }
+}
