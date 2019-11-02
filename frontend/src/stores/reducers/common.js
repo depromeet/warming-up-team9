@@ -24,20 +24,16 @@ export function createInitialCommonState() {
 export function commonReducer(state = createInitialCommonState(), action) {
   return produce(state, draft => {
     switch (action.type) {
-      case COMMON_ACTION_TYPES.checkAuth:
+      case COMMON_ACTION_TYPES.checkAuthRequest:
         draft.isCheckingAuth = true;
         break;
-      case COMMON_ACTION_TYPES.checkAuthSuccess:
+      case COMMON_ACTION_TYPES.checkAuthResponse:
         draft.isInitialized = true;
         draft.isCheckingAuth = false;
 
         if (action.payload.isAuthenticated) {
           draft.user = action.payload.user;
         }
-        break;
-      case COMMON_ACTION_TYPES.checkAuthFail:
-        draft.isInitialized = true;
-        draft.isCheckingAuth = false;
         break;
       default:
         break;
