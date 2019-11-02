@@ -15,7 +15,7 @@ export function useTodayTimer() {
     const intervalId = window.setInterval(() => {
       setDate(getDate());
       setTime(getTime());
-    }, [MINUTES]);
+    }, MINUTES);
 
     return () => {
       window.clearInterval(intervalId);
