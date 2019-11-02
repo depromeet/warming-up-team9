@@ -12,9 +12,10 @@ import arrowRight from './arrow-right.svg';
 interface Props {
   month: Date;
   focusedDay?: Date;
+  className?: string;
 }
 
-function CalendarMonth({ month, focusedDay }: Props) {
+function CalendarMonth({ month, focusedDay, className }: Props) {
   const weeks = useMemo(() => getCalendarMonthWeeks(month), [month]);
   const monthTitle = useMemo(() => format(month, 'MMMM'), [month]);
 
@@ -26,7 +27,7 @@ function CalendarMonth({ month, focusedDay }: Props) {
   );
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <Navigator>
         <NavigateButton aria-label="이전 달">
           <img src={arrowLeft} alt="" aria-hidden={true} />
