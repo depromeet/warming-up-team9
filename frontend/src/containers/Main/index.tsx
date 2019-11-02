@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Today from '../Today';
 import { CalendarMonth } from '../Calendar';
+import TodayTask from '../TodayTask';
 
 export default function Main() {
   return (
@@ -14,7 +15,7 @@ export default function Main() {
           2
         </GridCell>
         <GridCell column="1 / 4" row="6 / 19">
-          3
+          <TodayTask />
         </GridCell>
         <GridCell column="4 / 6" row="10 / 19">
           <StyledCalendarMonth month={new Date()} />
