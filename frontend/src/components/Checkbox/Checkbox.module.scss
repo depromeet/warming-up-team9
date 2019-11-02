@@ -1,0 +1,24 @@
+.check-agree{
+  position: relative;
+  margin-bottom: 30px;
+  
+  .error{
+    position: absolute;
+    right: 10px;
+    border : 1px solid #ff9300;
+    border-radius: 16px;
+    padding : 3px 7px;
+    color : #ff9300;
+    font-size: 8px;
+  }
+  .label{
+    color: #232323;
+    font-size: 14px;
+    padding-left: 5px;
+  }
+  input{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+  }
+}
