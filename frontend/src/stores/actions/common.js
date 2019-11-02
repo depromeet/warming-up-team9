@@ -1,6 +1,7 @@
 export const COMMON_ACTION_TYPES = {
   checkAuthRequest: 'common/check-auth-request',
   checkAuthResponse: 'common/check-auth-response',
+  addTaskToList: 'common/add-task-to-list',
 };
 
 export const checkAuthRequestAction = () => ({
@@ -18,3 +19,8 @@ export const checkAuthResponseAction = payload => {
     },
   };
 };
+
+export const addTaskToList = newTask => ({
+  type: COMMON_ACTION_TYPES.addTaskToList,
+  newTask,
+});

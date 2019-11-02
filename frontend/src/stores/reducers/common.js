@@ -18,6 +18,7 @@ export function createInitialCommonState() {
     isCheckingAuth: true,
     authToken: storage.get(AUTH_TOKEN_STORAGE_KEY),
     user: null,
+    taskList: [],
   };
 }
 
@@ -34,6 +35,9 @@ export function commonReducer(state = createInitialCommonState(), action) {
         if (action.payload.isAuthenticated) {
           draft.user = action.payload.user;
         }
+        break;
+      case COMMON_ACTION_TYPES.addTaskToList:
+        draft.taskList.push(action.newTask);
         break;
       default:
         break;
