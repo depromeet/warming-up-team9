@@ -21,3 +21,8 @@ export const selectUser = createSelector(
   selectCommonState,
   state => state.user
 );
+
+export const selectTaskList = createSelector(
+  selectCommonState,
+  state => state.taskList
+);
