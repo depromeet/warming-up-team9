@@ -1,5 +1,5 @@
 .login-box{
-  width: 31vw;
+  width: 40vw;
   height: 100vh;
   overflow: hidden;
   position: absolute;
@@ -7,6 +7,7 @@
   right: 0;
   background-color: #fff;
   font-weight: 300;
+  padding-right: 50px;
 
   p{
     font-size: 30px;
@@ -14,11 +15,11 @@
     letter-spacing: -1.13px;
     color: #656565;
     text-align: center;
-    margin: 50px 0;
-    margin-top: 180px;
+    margin: 70px 0;
+    margin-top: 100px;
   }
   .form-contents{
-    width: 66%;
+    width: 60%;
     margin: 20px auto;
   }
   .sign-btn{
