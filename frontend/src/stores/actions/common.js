@@ -2,6 +2,8 @@ export const COMMON_ACTION_TYPES = {
   checkAuth: 'common/check-auth',
   checkAuthSuccess: 'common/check-auth-success',
   checkAuthFail: 'common/check-auth-fail',
+
+  addTaskToList: 'common/add-task-to-list',
 };
 
 export const checkAuthAction = () => ({
@@ -23,4 +25,9 @@ export const checkAuthSuccessAction = payload => {
 export const checkAuthFailAction = error => ({
   type: COMMON_ACTION_TYPES.checkAuthFail,
   error,
+});
+
+export const addTaskToList = newTask => ({
+  type: COMMON_ACTION_TYPES.addTaskToList,
+  newTask,
 });

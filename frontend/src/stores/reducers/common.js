@@ -18,6 +18,8 @@ export function createInitialCommonState() {
     isCheckingAuth: true,
     authToken: storage.get(AUTH_TOKEN_STORAGE_KEY),
     user: null,
+
+    taskList: [],
   };
 }
 
@@ -38,6 +40,9 @@ export function commonReducer(state = createInitialCommonState(), action) {
       case COMMON_ACTION_TYPES.checkAuthFail:
         draft.isInitialized = true;
         draft.isCheckingAuth = false;
+        break;
+      case COMMON_ACTION_TYPES.addTaskToList:
+        draft.taskList.push(action.newTask);
         break;
       default:
         break;
