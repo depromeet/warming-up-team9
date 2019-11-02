@@ -1,6 +1,7 @@
 .login-box{
-  width: 40vw;
-  height: 100vh;
+
+  width: 40%;
+  height: 100%;
   overflow: hidden;
   position: absolute;
   top: 0;
@@ -31,13 +32,12 @@
     padding: 30px;
     font-size: 14px;
     text-align: center;
-    
+
     a{
       color: #9f9f9f;
     }
   }
 }
-  
 
 /*
 html5doctor.com Reset Stylesheet
@@ -133,7 +133,8 @@ table {
 hr {
     display:block;
     height:1px;
-    border:0;  
+
+    border:0;
     border-top:1px solid #cccccc;
     margin:1em 0;
     padding:0;
