@@ -1,26 +1,20 @@
 export const COMMON_ACTION_TYPES = {
-  checkAuth: 'common/check-auth',
-  checkAuthSuccess: 'common/check-auth-success',
-  checkAuthFail: 'common/check-auth-fail',
+  checkAuthRequest: 'common/check-auth-request',
+  checkAuthResponse: 'common/check-auth-response',
 };
 
-export const checkAuthAction = () => ({
-  type: COMMON_ACTION_TYPES.checkAuth,
+export const checkAuthRequestAction = () => ({
+  type: COMMON_ACTION_TYPES.checkAuthRequest,
 });
 
-export const checkAuthSuccessAction = payload => {
+export const checkAuthResponseAction = payload => {
   const { isAuthenticated, user } = payload;
 
   return {
-    type: COMMON_ACTION_TYPES.checkAuthSuccess,
+    type: COMMON_ACTION_TYPES.checkAuthResponse,
     payload: {
       isAuthenticated,
       user: isAuthenticated ? user : null,
     },
   };
 };
-
-export const checkAuthFailAction = error => ({
-  type: COMMON_ACTION_TYPES.checkAuthFail,
-  error,
-});
