@@ -10,6 +10,7 @@ export default function CalendarWeek({ children }: Props) {
 }
 
 const Week = styled.tr`
+  flex: 1 1 auto;
   display: flex;
   width: 100%;
 `;

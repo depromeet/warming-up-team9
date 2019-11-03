@@ -1,0 +1,8 @@
+[build]
+    base = "frontend/"
+    publish = "build/"
+    command = "yarn build"
+
+[context.production]
+
+[context.deploy-preview]

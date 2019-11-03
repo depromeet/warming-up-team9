@@ -1,13 +1,13 @@
+import styled from '@emotion/styled';
 import { format, isSameDay } from 'date-fns';
 import React, { memo, useCallback, useMemo } from 'react';
 import { getCalendarMonthWeeks } from '../../utils';
-import styled from '@emotion/styled';
+import arrowLeft from './arrow-left.svg';
+import arrowRight from './arrow-right.svg';
 import CalendarDay from './CalendarDay';
 import CalendarMonthHead from './CalendarMonthHead';
 import CalendarWeek from './CalendarWeek';
 import { NAVIGATOR_SIZE } from './sizes';
-import arrowLeft from './arrow-left.svg';
-import arrowRight from './arrow-right.svg';
 
 interface Props {
   month: Date;
@@ -56,9 +56,13 @@ function CalendarMonth({ month, focusedDay, className }: Props) {
 export default memo(CalendarMonth);
 
 const Wrapper = styled.div`
-  padding: 24px 0;
+  padding: 20px 0 0 0;
   background-color: #61676f;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
 `;
 
 const Navigator = styled.nav`
@@ -91,12 +95,18 @@ const NavigateButton = styled.button`
 `;
 
 const Table = styled.table`
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  flex: 1 1 auto;
 
   & > tbody {
-    display: block;
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    flex: 1 1 auto;
   }
 `;
 
