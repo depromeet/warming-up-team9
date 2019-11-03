@@ -3,6 +3,7 @@ import express from "express";
 import logger from "morgan";
 import * as middlewares from "./middlewares";
 import router from "./router";
+import * as db from "./models";
 
 const PORT = 3000;
 
@@ -16,6 +17,15 @@ app.use(router(express.Router()));
 app.use(middlewares.notFoundCreator);
 app.use(middlewares.errorHandler);
 
-app.listen(PORT, () => {
-    console.log(`Server is Listening on port ${PORT}`);
-});
+(async () => {
+    try {
+        await db.init();
+
+        app.listen(PORT, () => {
+            console.log(`Server is Listening on port ${PORT}`);
+        });
+    } catch (err) {
+        console.log(err);
+        process.exit(1);
+    }
+})();
