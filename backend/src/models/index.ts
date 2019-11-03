@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
+
 import config from "../config";
+import Users from "./users";
 
 const env: string = process.env.NODE_ENV || "development";
 
@@ -12,4 +14,8 @@ export const init = async () => {
     } catch (e) {
         throw `MongoDB Connection Fail, ${e.message}`;
     }
+};
+
+export const db = {
+    Users,
 };
