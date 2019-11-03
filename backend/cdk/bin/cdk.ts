@@ -5,3 +5,5 @@ import { Jjayo } from "../lib/cdk-stack";
 
 const app = new cdk.App();
 new Jjayo(app, "JjayoStack");
+
+app.synth();
