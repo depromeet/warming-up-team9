@@ -1,10 +1,18 @@
 import createHttpError from "http-errors";
 import bcryptjs from "bcryptjs";
-import { db } from "../models";
 
-interface SignUpArg {
+import { db } from "../models";
+import { auth } from "../controllers";
+import { UsersDocument } from "../models/users";
+
+export interface SignUpArg {
     email: string;
     nickname: string;
+    password: string;
+}
+
+export interface LoginArg {
+    email: string;
     password: string;
 }
 
@@ -26,11 +34,33 @@ const signUp = async (args: SignUpArg) => {
         email,
         nickname,
         passwordHash,
-    });
+    }) as UsersDocument;
     await user.save();
-    return user;
+    return auth.makeJWT({
+        email,
+        nickname,
+    });
+};
+
+const login = async (args: LoginArg) => {
+    const { email, password } = args;
+    const user = (await db.Users.findOne({ email })) as UsersDocument;
+    if (!user) {
+        throw createHttpError(400, { code: 102, message: "존재하지 않는 이메일" });
+    }
+
+    const isCorrectPassword = bcryptjs.compareSync(password, user.passwordHash);
+    if (!isCorrectPassword) {
+        throw createHttpError(400, { code: 103, message: "일치하지 않는 비밀번호" });
+    }
+
+    return auth.makeJWT({
+        email: user.email,
+        nickname: user.nickname,
+    });
 };
 
 export default {
     signUp,
+    login,
 };
