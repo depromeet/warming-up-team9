@@ -21,6 +21,8 @@ export default function CalendarMonthHead() {
 const MonthHead = styled.thead`
   display: block;
   width: 100%;
+  padding: 0 8px;
+  box-sizing: border-box;
 
   & > tr {
     display: flex;
