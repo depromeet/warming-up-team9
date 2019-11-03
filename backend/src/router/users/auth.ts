@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import Joi from "@hapi/joi";
-import bcryptjs from "bcryptjs";
 import createHttpError from "http-errors";
+import { userService } from "../../services";
 import { db } from "../../models";
 
 export const login: RequestHandler = (req, res, next) => {
@@ -30,18 +30,11 @@ export const signUp: RequestHandler = async (req, res, next) => {
                 .alphanum()
                 .required(),
         });
-        const { email, nickname, password } = await schema.validateAsync(req.body).catch(err => {
+        const signUpArgs = await schema.validateAsync(req.body).catch(err => {
             throw createHttpError(400, err.message);
         });
 
-        const passwordHash = await bcryptjs.hashSync(password);
-        const user = new db.Users({
-            email,
-            nickname,
-            passwordHash,
-        });
-        await user.save();
-
+        const user = await userService.signUp(signUpArgs);
         res.send(user);
     } catch (err) {
         next(err);
