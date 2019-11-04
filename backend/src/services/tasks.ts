@@ -5,6 +5,11 @@ export interface AddTaskArg {
     title: string;
 }
 
+export interface EditTaskArg {
+    taskId: string;
+    title: string;
+}
+
 export const addTask = async (args: AddTaskArg) => {
     const { owner, title } = args;
     const task = await new db.Tasks({

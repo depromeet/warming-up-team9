@@ -1,20 +1,25 @@
 import * as mongoose from "mongoose";
 
 export enum TaskStates {
-    "PENDING",
-    "DONE",
+    "PENDING" = "PENDING",
+    "DONE" = "DONE",
+    "DELETE" = "DELETE",
 }
 
 export type TasksDocument = mongoose.Document & {
-    email: string;
-    nickname: string;
-    passwordHash: string;
+    title: string;
+    state: TaskStates;
+    owner: string;
 };
 
 const schema = new mongoose.Schema(
     {
         title: { type: String },
-        state: { type: String, enum: [TaskStates.PENDING, TaskStates.DONE], default: TaskStates.PENDING },
+        state: {
+            type: String,
+            enum: [TaskStates.PENDING, TaskStates.DONE, TaskStates.DELETE],
+            default: TaskStates.PENDING,
+        },
         owner: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
     },
     {
