@@ -15,7 +15,7 @@ const schema = new mongoose.Schema(
     {
         title: { type: String },
         state: { type: String, enum: [TaskStates.PENDING, TaskStates.DONE], default: TaskStates.PENDING },
-        owner: { type: mongoose.Types.ObjectId, ref: "Users" },
+        owner: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
     },
     {
         timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
