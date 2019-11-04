@@ -7,6 +7,7 @@ export type UsersDocument = mongoose.Document & {
 };
 
 export type TokenPayload = {
+    uid: string;
     email: string;
     nickname: string;
 };

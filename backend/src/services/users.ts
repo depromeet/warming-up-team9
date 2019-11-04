@@ -37,6 +37,7 @@ const signUp = async (args: SignUpArg) => {
     }) as UsersDocument;
     await user.save();
     return auth.makeJWT({
+        uid: user._id,
         email,
         nickname,
     });
@@ -55,6 +56,7 @@ const login = async (args: LoginArg) => {
     }
 
     return auth.makeJWT({
+        uid: user._id,
         email: user.email,
         nickname: user.nickname,
     });
