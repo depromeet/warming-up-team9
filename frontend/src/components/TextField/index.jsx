@@ -7,7 +7,7 @@ const TextField = ({ label, value, error, ...rest }) => {
   return (
     <div className={cx('label-input')}>
       {
-        error === '' ?
+        error === '' || error === undefined ?
           null
           :
           <div className={cx('error')}>{error}</div>
