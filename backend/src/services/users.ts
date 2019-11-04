@@ -16,6 +16,10 @@ export interface LoginArg {
     password: string;
 }
 
+export interface GetUserArg {
+    uid: string;
+}
+
 const signUp = async (args: SignUpArg) => {
     const { email, nickname, password } = args;
     const [duplicatedEmailUser, duplicatedNicknameUser] = await Promise.all([
@@ -62,7 +66,18 @@ const login = async (args: LoginArg) => {
     });
 };
 
+const getUser = async (args: GetUserArg) => {
+    const { uid: _id } = args;
+    const user = (await db.Users.findOne({ _id })) as UsersDocument;
+    if (!user) {
+        throw createHttpError(404, { code: 105, message: "존재하지 않는 유저" });
+    }
+
+    return user;
+};
+
 export default {
     signUp,
     login,
+    getUser,
 };

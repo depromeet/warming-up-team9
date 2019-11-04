@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import Joi from "@hapi/joi";
 import createHttpError from "http-errors";
 import { userService } from "../../services";
-import { LoginArg, SignUpArg } from "../../services/users";
+import { LoginArg, SignUpArg, GetUserArg } from "../../services/users";
 
 export const login: RequestHandler = async (req, res, next) => {
     try {
@@ -49,6 +49,22 @@ export const signUp: RequestHandler = async (req, res, next) => {
 
         const token = await userService.signUp(signUpArgs);
         res.json({ token });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const getUser: RequestHandler = async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return next(createHttpError(401));
+        }
+        const getUserArgs: GetUserArg = { uid: req.user.uid };
+        const userInfo = await userService.getUser(getUserArgs);
+        res.json({
+            email: userInfo.email,
+            nickname: userInfo.nickname,
+        });
     } catch (err) {
         next(err);
     }
