@@ -1,3 +1,4 @@
-import userService from "./users";
+import * as userService from "./users";
+import taskService from "./tasks";
 
-export { userService };
+export { userService, taskService };
