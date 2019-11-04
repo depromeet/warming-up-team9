@@ -32,3 +32,17 @@ export const editTask: RequestHandler = async (req, res, next) => {
         next(err);
     }
 };
+
+export const getTasks: RequestHandler = async (req, res, next) => {
+    try {
+        const { uid } = req.user;
+        const filter = await Joi.object({
+            filter: Joi.string(),
+        }).validateAsync(req.query);
+        const tasks = await taskService.getTasks({ owner: uid, filter });
+        console.log(tasks);
+        res.json(tasks);
+    } catch (err) {
+        next(err);
+    }
+};

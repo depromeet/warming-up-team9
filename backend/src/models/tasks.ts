@@ -10,6 +10,7 @@ export type TasksDocument = mongoose.Document & {
     title: string;
     state: TaskStates;
     owner: string;
+    createdAt: Date;
 };
 
 const schema = new mongoose.Schema(
