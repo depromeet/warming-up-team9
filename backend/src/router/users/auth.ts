@@ -56,9 +56,6 @@ export const signUp: RequestHandler = async (req, res, next) => {
 
 export const getUser: RequestHandler = async (req, res, next) => {
     try {
-        if (!req.user) {
-            return next(createHttpError(401));
-        }
         const getUserArgs: GetUserArg = { uid: req.user.uid };
         const userInfo = await userService.getUser(getUserArgs);
         res.json({
