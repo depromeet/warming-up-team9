@@ -2,17 +2,7 @@ import { db } from "../models";
 import createHttpError = require("http-errors");
 import { TasksDocument } from "../models/tasks";
 
-export interface AddTaskArg {
-    owner: string;
-    title: string;
-}
-
-export interface EditTaskArg {
-    taskId: string;
-    title: string;
-}
-
-export const addTask = async (args: AddTaskArg) => {
+export const addTask = async (args: { owner: string; title: string }) => {
     const { owner, title } = args;
     const task = await new db.Tasks({
         owner,
@@ -22,7 +12,7 @@ export const addTask = async (args: AddTaskArg) => {
     return task;
 };
 
-export const editTask = async (args: EditTaskArg) => {
+export const editTask = async (args: { taskId: string; title: string }) => {
     const { taskId, title } = args;
     const task = (await db.Tasks.findOne({ _id: taskId })) as TasksDocument;
     if (!task) {
