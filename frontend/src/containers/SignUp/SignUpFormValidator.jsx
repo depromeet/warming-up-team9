@@ -1,6 +1,6 @@
 import validator from 'validator';
 
-class FormValidator{
+class SignUpFormValidator{
   constructor(validations){
     this.validations = validations
   }
@@ -38,4 +38,4 @@ class FormValidator{
   }
 }
 
-export default FormValidator;
+export default SignUpFormValidator;

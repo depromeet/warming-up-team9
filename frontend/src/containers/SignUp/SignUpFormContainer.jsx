@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SignUpForm from '../../components/SignUpForm';
-// import * as authAction from '../stores/modules/auth';
-import FormValidator from './FormValidator';
+import * as authAction from '../../stores/actions/auth';
+import FormValidator from './SignUpFormValidator';
 
 class SignUpFormContainer extends Component {
   constructor() {
@@ -25,8 +25,8 @@ class SignUpFormContainer extends Component {
     }
     // 조건 : 
     const checkagree = (cka) => {
-      console.log(cka);
-
+      // console.log(cka);
+      return true;
     }
 
     // 입력 값에 따른 유효성 검사
@@ -81,7 +81,7 @@ class SignUpFormContainer extends Component {
       password: '',
       nickname: '',
       checkpassword: '',
-      checkagree: '',
+      checkagree: false,
       validation: this.validator.validResult(),
     }
   }
@@ -93,14 +93,22 @@ class SignUpFormContainer extends Component {
   }
 
   // 유효성 검사가 모두 통과되었는지 확인 후 변경
-  onFormSubmit = () => {
+  async onFormSubmit() {
     const validation = this.validator.validate(this.state);
     this.setState({ validation });
+
+    if(validation){
+      // 리덕스에게 데이터 전달
+      const { registerUser }= this.props;
+      const { email, password, nickname } = this.state;
+
+      return await registerUser({email, password, nickname});
+    }
   }
 
   render() {
     // const { errorCode } = this.props;
-    console.log(this.state.checkagree);
+    // console.log(this.state.checkagree);
     const {
       email,
       password,
@@ -127,21 +135,19 @@ class SignUpFormContainer extends Component {
   }
 }
 
-// const mapStateToProps = state => ({
-//   status : state.auth.register.status,
-//   errorCode : state.auth.register.error
-// }); 
+const mapStateToProps = state => ({
+  status : state.auth.register.status,
+  // errorCode : state.auth.register.error
+}); 
 
-// const mapDispatchToProps = dispatch => ({
-//   registerRequest: ({ email, password, nickname }) => {
-//     return dispatch(registerRequest(email, password, nickname));
-//   }
-// });
+const mapDispatchToProps = dispatch => ({
+  registerUser: ({ email, password, nickname }) => {
+    return dispatch(authAction.registerUser(email, password, nickname));
+  }
+});
 
-export default SignUpFormContainer;
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(SignUpFormContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignUpFormContainer);
 
