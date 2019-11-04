@@ -1,4 +1,6 @@
 import { db } from "../models";
+import createHttpError = require("http-errors");
+import { TasksDocument } from "../models/tasks";
 
 export interface AddTaskArg {
     owner: string;
@@ -18,4 +20,14 @@ export const addTask = async (args: AddTaskArg) => {
     });
     await task.save();
     return task;
+};
+
+export const editTask = async (args: EditTaskArg) => {
+    const { taskId, title } = args;
+    const task = (await db.Tasks.findOne({ _id: taskId })) as TasksDocument;
+    if (!task) {
+        throw createHttpError(400, { code: 200, message: "존재하지 않는 task" });
+    }
+    task.title = title;
+    await task.save();
 };

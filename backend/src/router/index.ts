@@ -8,6 +8,7 @@ const router = (router: express.Router) => {
     router.route("/users").post(users.signUp);
     router.route("/users/me").get([verifyTokenMiddleware, users.getUser]);
     router.route("/tasks").post([verifyTokenMiddleware, tasks.addTask]);
+    router.route("/tasks/:taskId").put([verifyTokenMiddleware, tasks.editTask]);
 
     return router;
 };
