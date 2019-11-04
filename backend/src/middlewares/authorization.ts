@@ -14,6 +14,9 @@ export const verifyTokenMiddleware: RequestHandler = async (req, res, next) => {
         req.user = auth.verifyToken(token);
         next();
     } catch (err) {
+        if (err.message === "jwt expired") {
+            return next(createHttpError(403, { code: 106, message: "jwt expired" }));
+        }
         next(createHttpError(403, err.message));
     }
 };
