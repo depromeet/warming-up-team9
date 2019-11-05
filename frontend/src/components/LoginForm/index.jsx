@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import TextField from '../TextField';
-import Button from '../Button';
+import SignButton from '../SignButton';
+import carrot from '../../static/images/carrot.jpg'
 import classnames from 'classnames/bind';
 import styles from './LoginForm.module.scss';
 
@@ -28,7 +29,7 @@ const LoginForm = ({
 
   return( 
     <div className={cx('login-box')}>
-      <p>짜요짜요</p>
+      <div className={cx('carrot')}><img src={carrot} alt="carrot"/></div>
       <div className={cx('form-contents')}>
         <TextField
           type="email"
@@ -45,14 +46,20 @@ const LoginForm = ({
           onChange={({target: {value}}) => setPassword(value)}
         />
       </div>
-      <div className={cx('sign-btn')} onClick={onFormSubmit}> 
-        <Button 
-          children = "로그인"
+      <div className={cx('sign-btn', 'first-btn')} onClick={onFormSubmit}> 
+        <SignButton 
+          label = "로그인"
         />
       </div>
-      <span className={cx('sign-link')}>
-        <Link to='/signup'>혹은 회원가입</Link>
-      </span>
+      <div className={cx('sign-btn')}>
+        <Link to='/signup'>
+          <SignButton
+            label = "회원가입"
+            col = "#0b79ff"
+            backCol = "#e2edff"
+          />
+        </Link>
+      </div>
     </div>
   );
 }
