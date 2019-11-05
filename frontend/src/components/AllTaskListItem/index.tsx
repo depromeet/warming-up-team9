@@ -11,7 +11,7 @@ interface Props {
 function AllTaskListItem({ completed, label, className }: Props) {
   return (
     <Item className={className}>
-      <input type="checkbox" checked={completed} />
+      <input readOnly={true} type="checkbox" checked={completed} />
       <Text completed={completed}>{label}</Text>
     </Item>
   );

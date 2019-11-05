@@ -3,6 +3,9 @@ import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { User } from '../../models';
 import { HEADER_SIZE } from './sizes';
+import logo from './logo.png';
+import logo2x from './logo@2x.png';
+import logo3x from './logo@3x.png';
 
 interface Props {
   user: User | null;
@@ -22,7 +25,7 @@ export default function Header({ user }: Props) {
   return (
     <Wrapper>
       <Logo href="/" aria-label="짜요짜요">
-        로고
+        <img src={logo3x} srcSet={`${logo} 1x, ${logo2x} 2x, ${logo3x} 3x`} alt="" aria-hidden={true} />
       </Logo>
       <Button onClick={handleClick}>{user == null ? '로그인' : '로그아웃'}</Button>
     </Wrapper>
@@ -44,6 +47,12 @@ const Logo = styled.a`
   text-align: center;
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
+  user-select: none;
+
+  > img {
+    height: 34px;
+  }
 `;
 
 const Button = styled.button`

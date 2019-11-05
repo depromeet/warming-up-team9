@@ -21,7 +21,7 @@ async function getUserData(authToken) {
   }
 
   try {
-    return await fetchUser();
+    return await fetchUser(authToken);
   } catch {
     return null;
   }
