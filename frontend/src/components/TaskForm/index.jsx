@@ -1,5 +1,6 @@
+import styled from '@emotion/styled';
 import React, { useState } from 'react';
-import './styles.css';
+import Dropdown from '../Dropdown'
 
 export default function TaskForm(props) {
   
@@ -7,59 +8,87 @@ export default function TaskForm(props) {
 
   const [inputValue, setInputValue] = useState("");
 
-  // TODO: taskList -> filteredList (?)
-  const onInputChange = (e) => {
-    setInputValue(e.target.value);
-  }
-
-  // TODO: 백엔드 AJAX CALL (TASK LIST 업데이트)
-  const addNewTask = () => {
-    addTaskToList(inputValue);
-    setInputValue("");
-  }
-
   // TODO: 메인 화면으로 넘어가기
   const nextPage = () => {}
 
   return (
-    <div className="createTask-container">
-      <div className="header">
-        <span className="header-text">환영합니다, {user.nickname}님!</span>
-        <strong className="header-text">지금 해야 할 일을 추가해볼까요?</strong>
-      </div>
-      <div className="add-task">
-        <input
-          type="text"
-          name="할 일 추가하기"
-          placeholder="해야할 Task를 적어주세요"
-          list="options"
-          className="new-task-input"
-          onChange={(e) => onInputChange(e)}
-          value={inputValue}
+      <Wrapper>
+          <Title>
+          환영합니다, 디프마니님!
+          <br />
+          <strong>지금 해야 할 일을 추가해볼까요?</strong>
+        </Title>
+        <Dropdown suggestions={["디프만 자소서 작성하기", 
+        "디프만 지원서 제출하기", "워밍업 프로젝트 기획안 작성", "워밍업 프로젝트 와이어프레임", 
+        "워밍업 프로젝트 GUI 디자인", "로고 디자인", "디프만 보고서 쓰기"]} 
+          addTaskToList={addTaskToList}
         />
-        <button className="add-task-btn" onClick={addNewTask}>
-          추가하기
-        </button>
-      </div>
-      <ul className="dropdown-list">
-        {taskList.map((task, i) => (
-          <li key={i} className="dropdown-list-item">
-            <span className="item-name">{task}</span>
-            <button className="delete-task-btn"></button>
-          </li>
-        ))}
-      </ul>
-      <div className="next-btns">
-        <button className="skip-btn">건너뛸래요</button>
-        <button className="done-btn">작성완료</button>
-      </div>
-    </div>
-  );
+        <Bottom>
+            <SkipButton>건너뛸래요</SkipButton>
+            <CompleteButton>작성완료</CompleteButton>
+        </Bottom>
+      </Wrapper>
+  )
 }
 
-TaskForm.defaultProps = {
-  user: {
-      nickname: '디프마니',
-  },
-  taskList: [],
-};
+const Wrapper = styled.div`
+  box-sizing: border-box;
+  margin: auto;
+`;
+
+const Title = styled.h1`
+  box-sizing: border-box;
+  padding-bottom: 47px;
+  margin: auto;
+  font-family: SpoqaHanSans;
+  font-weight: 300;
+  font-size: 28px;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: -1.59px;
+  text-align: center;
+  color: #61676f;
+`;
+
+const Bottom = styled.div`
+  width: 484px;
+  box-sizing: border-box;
+  padding: 38px 0;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+`
+
+const SkipButton = styled.div`
+  height: 50px;
+  border-radius: 7px;
+  background-color: #e2edff;
+  border: none;
+  box-sizing: border-box;
+  padding: 14px 59px;
+  font-size: 15px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: -0.64px;
+  text-align: center;
+  color: #0b79ff;
+`;
+
+const CompleteButton = styled.div`
+  height: 50px;
+  box-sizing: border-box;
+  padding: 14px 116px;
+  border-radius: 7px;
+  background-color: #ff5001;
+  font-size: 15px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: -0.64px;
+  text-align: center;
+  color: #ffffff;
+`;

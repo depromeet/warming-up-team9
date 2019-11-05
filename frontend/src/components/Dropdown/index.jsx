@@ -2,21 +2,22 @@ import styled from '@emotion/styled';
 import React, { useState, memo } from 'react';
 import DropdownItem from '../DropdownItem'
 
-// Autocomplete Dropdown 컴포넌트
-function Dropdown( {suggestions} ) {
-
+function Dropdown( {suggestions, addTaskToList} ) {
+  
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const [filteredSuggestions, setfilteredSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [userInput, setUserInput] = useState("");
 
-  // TODO: regex 사용하여 더 나은 필터 방식 적용하기
-  const onChangeInput = e => {      
-    const filtered = suggestions.filter(suggestion => (
+  // TODO: 더 나은 필터 방식 적용하기
+  const onInputChange = e => {
+    if (suggestions.length) {
+      const filtered = suggestions.filter(suggestion => (
         suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-    ));
+      ));
+      setfilteredSuggestions(filtered);
+    }
     setActiveSuggestionIndex(-1);
-    setfilteredSuggestions(filtered);
     setShowSuggestions(true);
     setUserInput(e.target.value);
   };
@@ -28,8 +29,7 @@ function Dropdown( {suggestions} ) {
     setUserInput(e.target.innerText);
   };
 
-  // TODO: key press 후에 changeInput 버그 해결하기
-  const onPressKey = e => {
+  const onKeyPress = e => {
     // enter key 눌렀을 경우,
     if (e.keyCode === 13) {
       setShowSuggestions(false);
@@ -55,18 +55,11 @@ function Dropdown( {suggestions} ) {
       setActiveSuggestionIndex(activeSuggestionIndex + 1);
     }
   };
-  
-  let suggestionsListComponent;
-  if (showSuggestions && userInput) {
-    if (filteredSuggestions.length) {
-      suggestionsListComponent = (
-        <UnorderedList>
-          {filteredSuggestions.map(suggestion => (
-            <DropdownItem suggestion={suggestion} onClickSuggestion={onClickSuggestion} />
-         ))}
-        </UnorderedList>
-      );
-    }
+
+  // TODO: 백엔드 AJAX CALL (TASK LIST 업데이트)
+  const addNewTask = () => {
+    addTaskToList(userInput);
+    setUserInput("");
   }
 
   return (
@@ -74,14 +67,21 @@ function Dropdown( {suggestions} ) {
       <Top>
         <Input
           type="text"
-          onChange={onChangeInput}
-          onKeyDown={onPressKey}
+          onChange={onInputChange}
+          onKeyDown={onKeyPress}
           value={userInput}
         />
-        <Button>추가하기</Button>
+        <Button onClick={addNewTask}>추가하기</Button>
       </Top>
       <br />
-      {suggestionsListComponent}
+      {(showSuggestions && userInput && filteredSuggestions.length) ? (
+        <UnorderedList>
+          {filteredSuggestions.map(suggestion => (
+            <DropdownItem suggestion={suggestion} onClickSuggestion={onClickSuggestion} />
+         ))}
+        </UnorderedList>
+      ) : null
+    }
     </Wrapper>
   )
 }
@@ -115,6 +115,7 @@ const Input = styled.input`
   color: #232323;
   opacity: 0.3;
   border: none;
+  outline: none;
 `;
 
 const Button = styled.button`
@@ -129,6 +130,7 @@ const Button = styled.button`
   font-weight: bold;
   text-align: left;
   border: none;
+  outline: none;
 `;
 
 const UnorderedList = styled.ul`
@@ -137,4 +139,11 @@ const UnorderedList = styled.ul`
   list-style-type: none;
   overflow-y: auto;
   overflow-x: hidden;
+  ::-webkit-scrollbar {
+    width: 11px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: #ff5001;
+  }
 `;

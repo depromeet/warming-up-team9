@@ -9,9 +9,10 @@ function DropdownItem(props) {
   return (
     <ListItem
       key={suggestion}
-      onClick={onClickSuggestion}
     >
-      <SuggestionText>{suggestion}</SuggestionText>
+      <SuggestionText onClick={onClickSuggestion} >
+        {suggestion}
+      </SuggestionText>
       <DeleteButton>
         <img src={deleteIcon} alt="Delete Icon"/>
       </DeleteButton>
