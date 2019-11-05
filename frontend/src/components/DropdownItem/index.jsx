@@ -13,8 +13,8 @@ function DropdownItem(props) {
       <SuggestionText onClick={onClickSuggestion} >
         {suggestion}
       </SuggestionText>
-      <DeleteButton>
-        <img src={deleteIcon} alt="Delete Icon"/>
+      <DeleteButton aria-label="할일 제거">
+        <img src={deleteIcon} alt="" aria-hidden={true}/>
       </DeleteButton>
     </ListItem>
   )
