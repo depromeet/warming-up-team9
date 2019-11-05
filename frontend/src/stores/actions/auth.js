@@ -1,4 +1,4 @@
-import axios from 'axios';
+import * as axios from 'axios';
 
 /* ActionTypes */
 export const AUTH_LOGIN = "auth/AUTH_LOGIN";
@@ -9,7 +9,7 @@ export const AUTH_REGISTER = "auth/AUTH_REGISTER";
 export const AUTH_REGISTER_SUCCESS = "auth/AUTH_REGISTER_SUCCESS";
 export const AUTH_REGISTER_FAILURE = "auth/AUTH_REGISTER_FAILURE";
 
-const API = 'http://jjayo-lb8a1-9y8obmv86z48-1047689790.ap-northeast-2.elb.amazonaws.com'
+export const API = 'http://api-jjayo.depromeet.com'
 
 
 export function login() {
@@ -48,42 +48,52 @@ export function loginFailure() {
 // }
 
 
-export function register() {
+export const register = () => {
   return {
     type: AUTH_REGISTER
   };
 }
 
-export function registerSuccess(payload) {
+export const registerSuccess = (payload) => {
   return {
     type: AUTH_REGISTER_SUCCESS,
     payload
   };
 }
 
-export function registerFailure(error) {
+export const registerFailure = (error) => {
   return {
     type: AUTH_REGISTER_FAILURE,
     error
   };
 }
 
+export async function registerUserAPI(values) {
+  try{
+  const res = await axios.post(`${API}/users`, values, {
+    headers: {
+      'Access-Control-Allow-Origin' : '*',
+      'Content-Type': 'application/json'
+    }
+  })
+  console.log(res);
+  return res;
+  } catch(err) {
+    console.log(err.message, err.code);
+  }
+}
+
 export function registerUser(values) {
-  return async function (dispatch) {
-  console.log("회원가입!");
+  return async dispatch => {
     dispatch(register());
-    // dispatch를 통해 받아온 값을 서버에 보냄
-    const { data } = await axios.post(`${API}/users/`, values);
     try{
-      localStorage.setItem('token', data.token); 
+      console.log('성공');
+      const data = await registerUserAPI(values);
       dispatch(registerSuccess(data));
     } catch (err) {
-      if(data.email){
         console.log('이미 존재하는 이메일');
         dispatch(registerFailure(err));
-      }
     }
-    return data;
   }
 }
 

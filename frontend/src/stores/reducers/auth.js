@@ -1,80 +1,69 @@
-import * as authActions from '../actions/auth';
+import produce from 'immer';
+import { AUTH_TOKEN_STORAGE_KEY } from '../../constants';
+import { generateStorage } from '../../utils';
+import * as authActions from '../actions/index';
 
-const initialState = {
-  token: localStorage.getItem('token'), // 토큰 받아오기
-  isAuthenticated: localStorage.getItem('token')? true : false, // 현재 상태 받아오기
-  user: {},
-  register: {
-    status: 'INIT',
-    error: -1
-  }
+export function createInitialCommonState() {
+  const storage = generateStorage();
+
+  return {
+    authToken: storage.get(AUTH_TOKEN_STORAGE_KEY),
+    user: null,
+    loginStatus: 'INIT', 
+    isLoggingIn: false, // 로그인 시도중
+    logInErrorRes: '', // 로그인 에러
+    signUpStatus: 'INIT', 
+    isSignedUp: false, // 회원가입 성공
+    isSigningUp: false, // 회원가입 시도중
+    signUpErrorRes: '' // 회원가입 에러
+  };
 }
 
-export function authReducer(state = initialState, action){
-  switch (action.type) {
-    case authActions.AUTH_LOGIN:
-      return {
-        ...state,
-        login: {
-          ...state.login,
-          status: 'WAITING'
-        }
-      };
-    case authActions.AUTH_LOGIN_SUCCESS:
-      return {
-        ...state,
-        login: {
-          ...state.login,
-          status: 'SUCCESS'
-        },
-        isAuthenticated: true,
-        user: action.payload
-      };
-    case authActions.AUTH_LOGIN_FAILURE:
-      return {
-        ...state,
-        login: {
-          ...state.login,
-          status: 'FAILURE'
-        },
-        isAuthenticated: false,
-        user: null,
-        token: null
-      };
+export function authReducer(state = createInitialCommonState(), action){
+  return produce(state, draft => {
+    switch (action.type) {
+      case authActions.AUTH_LOGIN: {
+        draft.isLoggingIn = true;
+        draft.logInErrorRes = '';
+        break;
+      }
+      case authActions.AUTH_LOGIN_SUCCESS: {
+        draft.isLoggingIn = false;
+        draft.logInErrorRes = '';
+        draft.user = action.payload.user;
+        break;
+      }
+      case authActions.AUTH_LOGIN_FAILURE: {
+        draft.isLoggingIn = false;
+        draft.logInErrorRes = action.err;
+        draft.user = null;
+        break;
+      }
 
-    case authActions.AUTH_REGISTER:
-        return {
-          ...state,
-          register: {
-            ...state.register,
-            status: 'WAITING',
-            error: -1
-          }
-        };
-      case authActions.AUTH_REGISTER_SUCCESS:
-        return {
-          ...state,
-          register: {
-            ...state.register,
-            status: 'SUCCESS'
-          },
-          token: action.payload.token,
-          user: action.patload.user,
-          isAuthenticated: true
-        };
-      case authActions.AUTH_REGISTER_FAILURE:
-        return {
-          ...state,
-          register: {
-            ...state.register,
-            status: 'FAILURE',
-            error: action.error
-          },
-          isAuthenticated: false,
-          user: null,
-          token: null
-        };
-    default: 
-      return state;
-  }
+      case authActions.AUTH_REGISTER: {
+        draft.signUpStatus = 'WAITING';
+        draft.isSignedUp = false;
+        draft.isSigningUp = true;
+        draft.signUpErrorRes = '';
+        break;
+      }
+      case authActions.AUTH_REGISTER_SUCCESS: {
+        draft.signUpStatus = 'SUCCESS';
+        draft.isSignedUp = true;
+        draft.isSigningUp = false;
+        draft.authToken = action.payload.token;
+        draft.user = action.payload.user;
+        break;
+      }
+      case authActions.AUTH_REGISTER_FAILURE: {
+        draft.signUpStatus = 'FAIL';
+        draft.isSigningUp = false;
+        draft.signUpErrorRes = action.err;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  });
 }
