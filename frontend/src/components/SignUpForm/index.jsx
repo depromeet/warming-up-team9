@@ -70,7 +70,7 @@ const SignUpForm = ({
         <Checkbox
           type="checkbox"
           name="checkagree"
-          checked={checkagree}
+          value={checkagree}
           label="회원가입 조항에 동의하십니까?"
           onChange={onChange}
           error={validation.checkagree.message}
