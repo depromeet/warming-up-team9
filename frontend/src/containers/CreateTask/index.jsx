@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, selectTaskList } from '../../stores/selectors';
 import { addTaskToList } from '../../stores/actions';
 
-export default function CreateTask() {
+function CreateTask() {
   const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
@@ -18,3 +18,5 @@ export default function CreateTask() {
     />
   );
 };
+
+export default React.memo(CreateTask);

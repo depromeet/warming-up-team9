@@ -2,11 +2,9 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import Dropdown from '../Dropdown'
 
-export default function TaskForm(props) {
+function TaskForm(props) {
   
   const { user, taskList, addTaskToList } = props;
-
-  const [inputValue, setInputValue] = useState("");
 
   // TODO: 메인 화면으로 넘어가기
   const nextPage = () => {}
@@ -14,13 +12,11 @@ export default function TaskForm(props) {
   return (
       <Wrapper>
           <Title>
-          환영합니다, 디프마니님!
+          환영합니다, {user.nickname}!
           <br />
           <strong>지금 해야 할 일을 추가해볼까요?</strong>
         </Title>
-        <Dropdown suggestions={["디프만 자소서 작성하기", 
-        "디프만 지원서 제출하기", "워밍업 프로젝트 기획안 작성", "워밍업 프로젝트 와이어프레임", 
-        "워밍업 프로젝트 GUI 디자인", "로고 디자인", "디프만 보고서 쓰기"]} 
+        <Dropdown suggestions={taskList} 
           addTaskToList={addTaskToList}
         />
         <Bottom>
@@ -30,6 +26,8 @@ export default function TaskForm(props) {
       </Wrapper>
   )
 }
+
+export default React.memo(TaskForm);
 
 const Wrapper = styled.div`
   box-sizing: border-box;

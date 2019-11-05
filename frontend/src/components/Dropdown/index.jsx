@@ -86,7 +86,7 @@ function Dropdown( {suggestions, addTaskToList} ) {
   )
 }
 
-export default Dropdown;
+export default React.memo(Dropdown);
 
 const Wrapper = styled.div`
   width: 584px;

@@ -20,7 +20,7 @@ function DropdownItem(props) {
   )
 }
 
-export default DropdownItem;
+export default React.memo(DropdownItem);
 
 const ListItem = styled.li`
   width: 584px;
