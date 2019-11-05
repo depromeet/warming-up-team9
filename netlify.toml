@@ -6,3 +6,8 @@
 [context.production]
 
 [context.deploy-preview]
+
+[[redirects]]
+    from = "/*"
+    to = "/index.html"
+    status = 200
