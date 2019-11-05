@@ -1,6 +1,5 @@
 .sign-box{
-
-  width: 40%;
+  width: 42%;
   height: 100%;
   overflow: hidden;
   position: absolute;
@@ -12,11 +11,8 @@
 
   .request-error{
     position: relative;
-    width: max-content;
     top: 23px;
-    border: 1px solid #ff9300;
-    border-radius: 16px;
-    padding: 3px 7px;
+    padding: 3px 0;
     color: #ff9300;
     font-size: 8px;
   }
@@ -27,15 +23,16 @@
     letter-spacing: -1.13px;
     color: #656565;
     text-align: center;
-    margin: 70px 0;
-    margin-top: 100px;
+    margin: 60px 0;
+    margin-top: 10%;
   }
   .form-contents{
-    width: 60%;
+    width: 55%;
     margin: 20px auto;
   }
   .sign-btn{
-    text-align: center;
-    margin-top: 40px;
+    width: 55%;
+    margin: 20px auto;
+    margin-top: 40px; 
   }
 }

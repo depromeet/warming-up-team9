@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '../TextField';
 import Checkbox from '../Checkbox';
-import Button from '../Button';
+import SignButton from '../SignButton';
 import classnames from 'classnames/bind';
 import styles from './SignUpForm.module.scss';
 
@@ -77,8 +77,8 @@ const SignUpForm = ({
         />
       </div>
       <div className={cx('sign-btn')} onClick={onFormSubmit}>
-        <Button
-          children="회원가입"
+        <SignButton
+          label="회원가입"
         />
       </div>
     </div>
