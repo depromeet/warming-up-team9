@@ -1,24 +1,37 @@
 .check-agree{
-  position: relative;
-  margin-bottom: 30px;
+  margin-top: 22px;
   
-  .error{
-    position: absolute;
-    right: 10px;
-    border : 1px solid #ff9300;
-    border-radius: 16px;
-    padding : 3px 7px;
-    color : #ff9300;
-    font-size: 8px;
-  }
-  .label{
+  label{
+    cursor: pointer;
     color: #232323;
-    font-size: 14px;
-    padding-left: 5px;
-  }
-  input{
-    display: inline-block;
-    width: 20px;
-    height: 20px;
+    display: block;
+    font-size: 15px;
+    letter-spacing: -0.7px;
+
+    input[type=checkbox] {
+      display: none;
+
+      +.label-text:before{
+        content: "";
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background: #ff5001;
+        border: 1px solid #df4703;
+        border-radius: 3px;
+        margin-right: 10px;
+      }
+      &:checked + .label-text:before{
+        content: "!";
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background: #ff5001;
+        border: 1px solid #df4703;
+        border-radius: 3px;
+        color: #dddfe6;
+        text-align: center;
+      }
+    }
   }
 }

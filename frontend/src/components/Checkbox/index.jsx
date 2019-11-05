@@ -3,7 +3,7 @@ import classnames from 'classnames/bind';
 import styles from './Checkbox.module.scss';
 const cx = classnames.bind(styles);
 
-const Checkbox = ({ label, checked, error, ...rest }) => {
+const Checkbox = ({ label, value, error, ...rest }) => {
   // console.log(value);
   return (
     <div className={cx('check-agree')}>
@@ -11,10 +11,12 @@ const Checkbox = ({ label, checked, error, ...rest }) => {
         error === '' ?
           null
           :
-          <div className={cx('error')}>{error}</div>
+          alert(error)
       }
-      <input type="checkbox" checked={checked} {...rest} />
-      <span className={cx('label')}>{label}</span>
+      <label>
+        <input type="checkbox" name="check" checked={value} {...rest}/>
+        <span className={cx('label-text')}>{label}</span>
+      </label>
     </div>
   )
 }
