@@ -1,12 +1,38 @@
 import styled from '@emotion/styled';
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import AllTaskList from '../../components/AllTaskList';
+import { loadAllTasksAction, loadAllTasksFailAction, loadAllTasksSuccessAction } from '../../stores/actions';
+import { selectAllTasks, selectAuthToken, selectIsAllTasksLoaded } from '../../stores/selectors';
+import { fetchAllTasks } from '../../remotes/api';
 
 interface Props {
   className?: string;
 }
 
 function AllTasks({ className }: Props) {
+  const dispatch = useDispatch();
+
+  const authToken = useSelector(selectAuthToken);
+  const isAllTasksLoaded = useSelector(selectIsAllTasksLoaded);
+  const allTasks = useSelector(selectAllTasks);
+
+  useEffect(() => {
+    if (isAllTasksLoaded) {
+      return;
+    }
+
+    dispatch(loadAllTasksAction());
+
+    fetchAllTasks(authToken)
+      .then(allTasks => {
+        dispatch(loadAllTasksSuccessAction({ allTasks }));
+      })
+      .catch(error => {
+        dispatch(loadAllTasksFailAction(error));
+      });
+  }, [dispatch, authToken, isAllTasksLoaded]);
+
   return (
     <Wrapper className={className}>
       <Top>
@@ -14,7 +40,15 @@ function AllTasks({ className }: Props) {
         <Button>추가하기</Button>
       </Top>
       <Bottom>
-        <AllTaskList />
+        {isAllTasksLoaded && allTasks.length > 0 ? (
+          <AllTaskList tasks={allTasks} />
+        ) : (
+          <Empty>
+            설정된 Task가 없습니다
+            <br />
+            Task를 만들어보세요
+          </Empty>
+        )}
       </Bottom>
     </Wrapper>
   );
@@ -74,4 +108,19 @@ const Button = styled.button`
   margin: 0;
   outline: 0;
   cursor: pointer;
+`;
+
+const Empty = styled.div`
+  padding: 100px 0;
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.5;
+  letter-spacing: -0.74px;
+  text-align: center;
+  color: #c3c4c6;
 `;
