@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import deleteIcon from './deleteIcon.svg'
 import './styles.css';
 
 export default function TaskForm(props) {
@@ -46,7 +45,7 @@ export default function TaskForm(props) {
         {taskList.map((task, i) => (
           <li key={i} className="dropdown-list-item">
             <span className="item-name">{task}</span>
-            <button className="delete-task-btn"><img src={deleteIcon} alt="Delete Icon"/></button>
+            <button className="delete-task-btn"></button>
           </li>
         ))}
       </ul>
