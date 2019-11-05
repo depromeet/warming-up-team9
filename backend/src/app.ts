@@ -1,6 +1,7 @@
 import "source-map-support/register";
 import express from "express";
 import logger from "morgan";
+import cors from "cors";
 import * as middlewares from "./middlewares";
 import router from "./router";
 import * as db from "./models";
@@ -10,6 +11,7 @@ const PORT = 3000;
 const app = express();
 
 app.use(logger("dev"));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
