@@ -1,9 +1,9 @@
-import React from 'react';
 import styled from '@emotion/styled';
-import Today from '../Today';
-import { CalendarMonth } from '../Calendar';
-import TodayTask from '../TodayTask';
+import React from 'react';
 import AllTasks from '../AllTasks';
+import Calendar from '../Calendar';
+import Today from '../Today';
+import TodayTask from '../TodayTask';
 
 export default function Main() {
   return (
@@ -19,7 +19,7 @@ export default function Main() {
           <TodayTask />
         </GridCell>
         <GridCell column="4 / 6" row="10 / 19">
-          <StyledCalendarMonth month={new Date()} />
+          <Calendar />
         </GridCell>
       </Grid>
     </Wrapper>
@@ -50,9 +50,4 @@ const Grid = styled.div`
 const GridCell = styled.div<{ column?: string; row?: string }>`
   ${props => (props.column ? `grid-column: ${props.column}` : '')};
   ${props => (props.column ? `grid-row: ${props.row}` : '')};
-`;
-
-const StyledCalendarMonth = styled(CalendarMonth)`
-  height: 100%;
-  box-sizing: border-box;
 `;

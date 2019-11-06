@@ -11,17 +11,19 @@ import { NAVIGATOR_SIZE } from './sizes';
 
 interface Props {
   month: Date;
+  onNavigateToPrev?: () => void;
+  onNavigateToNext?: () => void;
   focusedDay?: Date;
   className?: string;
 }
 
-function CalendarMonth({ month, focusedDay, className }: Props) {
+function CalendarMonth({ month, onNavigateToPrev, onNavigateToNext, focusedDay, className }: Props) {
   const weeks = useMemo(() => getCalendarMonthWeeks(month), [month]);
   const monthTitle = useMemo(() => format(month, 'MMMM'), [month]);
 
-  const getTabIndexForDay = useCallback(
+  const getIfFocusedDay = useCallback(
     (date: Date) => {
-      return focusedDay !== undefined && isSameDay(focusedDay, date) ? 0 : -1;
+      return focusedDay !== undefined && isSameDay(focusedDay, date);
     },
     [focusedDay]
   );
@@ -29,11 +31,11 @@ function CalendarMonth({ month, focusedDay, className }: Props) {
   return (
     <Wrapper className={className}>
       <Navigator>
-        <NavigateButton aria-label="이전 달">
+        <NavigateButton aria-label="이전 달" onClick={onNavigateToPrev}>
           <img src={arrowLeft} alt="" aria-hidden={true} />
         </NavigateButton>
         <Title>{monthTitle}</Title>
-        <NavigateButton aria-label="다음 달">
+        <NavigateButton aria-label="다음 달" onClick={onNavigateToNext}>
           <img src={arrowRight} alt="" aria-hidden={true} />
         </NavigateButton>
       </Navigator>
@@ -42,9 +44,19 @@ function CalendarMonth({ month, focusedDay, className }: Props) {
         <tbody>
           {weeks.map((week, i) => (
             <CalendarWeek key={i}>
-              {week.map(({ day, isOutsideDay }, dayOfWeek) => (
-                <CalendarDay key={dayOfWeek} day={day} isEmptyCell={isOutsideDay} tabIndex={getTabIndexForDay(day)} />
-              ))}
+              {week.map(({ day, isOutsideDay }, dayOfWeek) => {
+                const isFocusedDay = getIfFocusedDay(day);
+
+                return (
+                  <CalendarDay
+                    key={dayOfWeek}
+                    day={day}
+                    isEmptyCell={isOutsideDay}
+                    tabIndex={isFocusedDay ? 0 : -1}
+                    isSelected={isFocusedDay}
+                  />
+                );
+              })}
             </CalendarWeek>
           ))}
         </tbody>
