@@ -22,6 +22,18 @@ export const editTask = async (args: { taskId: string; title: string }) => {
     await task.save();
 };
 
+export const getTask = async (args: { owner: string; taskId: string }) => {
+    const { owner, taskId } = args;
+    const task = (await db.Tasks.findOne({ _id: taskId })) as TasksDocument;
+    if (!task) {
+        throw createHttpError(400, { code: 200, message: "존재하지 않는 task" });
+    }
+    if (task.owner !== owner) {
+        throw createHttpError(403);
+    }
+    return task;
+};
+
 export const getTasks = async (args: { owner: string; filter?: string }) => {
     const { owner, filter } = args;
     const query = {

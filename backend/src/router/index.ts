@@ -11,7 +11,10 @@ const router = (router: express.Router) => {
         .route("/users/me/tasks")
         .post([verifyTokenMiddleware, tasks.addTask])
         .get([verifyTokenMiddleware, tasks.getTasks]);
-    router.route("/users/me/tasks/:taskId").put([verifyTokenMiddleware, tasks.editTask]);
+    router
+        .route("/users/me/tasks/:taskId")
+        .get([verifyTokenMiddleware, tasks.getTask])
+        .put([verifyTokenMiddleware, tasks.editTask]);
 
     return router;
 };

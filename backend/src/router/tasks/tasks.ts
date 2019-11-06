@@ -16,6 +16,24 @@ export const addTask: RequestHandler = async (req, res, next) => {
     }
 };
 
+export const getTask: RequestHandler = async (req, res, next) => {
+    try {
+        const { uid } = req.user;
+        const taskId = await Joi.string()
+            .required()
+            .validateAsync(req.params.taskId);
+        const task = await taskService.getTask({ owner: uid, taskId });
+        res.json({
+            taskId: task._id,
+            title: task.title,
+            state: task.state,
+            processTimeSumSec: 0,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 export const editTask: RequestHandler = async (req, res, next) => {
     try {
         const schema = Joi.object({
