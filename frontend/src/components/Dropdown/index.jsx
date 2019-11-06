@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import DropdownItem from '../DropdownItem'
 
 function Dropdown( {suggestions, addSuggestion} ) {
@@ -8,19 +8,24 @@ function Dropdown( {suggestions, addSuggestion} ) {
   const [filteredSuggestions, setfilteredSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [userInput, setUserInput] = useState("");
+  const [inputPlaceholder, setInputPlaceholder] = useState("해야할 Task를 적어주세요");
 
   // TODO: 더 나은 필터 방식 적용하기
-  const onInputChange = e => {
-    if (suggestions.length) {
-      const filtered = suggestions.filter(suggestion => (
-        suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-      ));
-      setfilteredSuggestions(filtered);
-    }
-    setActiveSuggestionIndex(-1);
-    setShowSuggestions(true);
-    setUserInput(e.target.value);
-  };
+  const onInputChange = useCallback(
+    e => {
+      setfilteredSuggestions(prev => {
+        if (!suggestions.length) {
+          return prev;
+        }
+        return suggestions.filter(s => (
+          s.toLowerCase().indexOf(userInput.toLowerCase()) > -1)
+      )});
+      setActiveSuggestionIndex(-1);
+      setShowSuggestions(true);
+      setUserInput(e.target.value);
+    },
+    [suggestions, setfilteredSuggestions, setShowSuggestions, userInput]
+  );
 
   const onClickSuggestion = e => {
     setActiveSuggestionIndex(-1);
@@ -57,7 +62,11 @@ function Dropdown( {suggestions, addSuggestion} ) {
   };
 
   const addNewSuggestion = () => {
-    addSuggestion(userInput);
+    if (userInput.trim().length > 0) {
+      addSuggestion(userInput);
+    } else {
+      setInputPlaceholder("빈 Task는 추가할 수 없습니다");
+    }
     setUserInput("");
   }
 
@@ -66,6 +75,7 @@ function Dropdown( {suggestions, addSuggestion} ) {
       <Top>
         <Input
           type="text"
+          placeholder={inputPlaceholder}
           onChange={onInputChange}
           onKeyDown={onKeyPress}
           value={userInput}
@@ -76,7 +86,7 @@ function Dropdown( {suggestions, addSuggestion} ) {
       {(showSuggestions && userInput && filteredSuggestions.length) ? (
         <UnorderedList>
           {filteredSuggestions.map(suggestion => (
-            <DropdownItem suggestion={suggestion} onClickSuggestion={onClickSuggestion} />
+            <DropdownItem key={suggestion} suggestion={suggestion} onClickSuggestion={onClickSuggestion} />
          ))}
         </UnorderedList>
       ) : null
