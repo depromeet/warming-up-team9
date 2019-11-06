@@ -35,7 +35,12 @@ export class Jjayo extends cdk.Stack {
         });
 
         const listener = lb.addListener("Listener", {
-            port: 80,
+            protocol: ApplicationProtocol.HTTPS,
+            port: 443,
+            certificateArns: [
+                "arn:aws:acm:ap-northeast-2:770608515633:certificate/adca5d79-63fd-463c-be48-ca9831a7a94a",
+            ],
+            open: true,
         });
 
         listener.addTargets("Target", {
