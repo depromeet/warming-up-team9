@@ -22,7 +22,7 @@ export async function fetchAllTasks(authToken) {
   return data;
 }
 
-export async function updateNewTask(authToken, newTask) {
+export async function createNewTask(authToken, newTask) {
   const { data } = await axios.post(`${API_ROOT}/users/me/tasks`, {
     headers: {
       Authorization: authToken,

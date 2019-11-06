@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadAllTasksAction, loadAllTasksFailAction, loadAllTasksSuccessAction, addNewTaskAction } from '../../stores/actions';
 import { selectAllTasks, selectAuthToken, selectIsAllTasksLoaded } from '../../stores/selectors';
-import { updateNewTask } from '../../remotes/api';
+import { createNewTask } from '../../remotes/api';
 import Dropdown from '../../components/Dropdown'
 
 async function postNewTask(authToken, newTask) {
@@ -12,7 +12,7 @@ async function postNewTask(authToken, newTask) {
 
   const dispatch = useDispatch();
 
-  updateNewTask(authToken, newTask)
+  createNewTask(authToken, newTask)
     .then(() => {
       dispatch(addNewTaskAction(authToken, newTask));
     })
