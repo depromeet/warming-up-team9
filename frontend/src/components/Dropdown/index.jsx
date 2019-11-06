@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import React, { useState, memo } from 'react';
+import React, { useState } from 'react';
 import DropdownItem from '../DropdownItem'
 
-function Dropdown( {suggestions, addTaskToList} ) {
+function Dropdown( {suggestions, addSuggestion} ) {
   
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const [filteredSuggestions, setfilteredSuggestions] = useState([]);
@@ -56,9 +56,8 @@ function Dropdown( {suggestions, addTaskToList} ) {
     }
   };
 
-  // TODO: 백엔드 AJAX CALL (TASK LIST 업데이트)
-  const addNewTask = () => {
-    addTaskToList(userInput);
+  const addNewSuggestion = () => {
+    addSuggestion(userInput);
     setUserInput("");
   }
 
@@ -71,7 +70,7 @@ function Dropdown( {suggestions, addTaskToList} ) {
           onKeyDown={onKeyPress}
           value={userInput}
         />
-        <Button onClick={addNewTask}>추가하기</Button>
+        <Button onClick={addNewSuggestion}>추가하기</Button>
       </Top>
       <br />
       {(showSuggestions && userInput && filteredSuggestions.length) ? (
