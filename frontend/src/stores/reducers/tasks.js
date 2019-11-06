@@ -20,6 +20,9 @@ export function tasksReducer(state = createInitialTasksState(), action) {
         break;
       case TASKS_ACTION_TYPE.loadAllTasksFail:
         break;
+      case TASKS_ACTION_TYPE.addNewTask:
+        draft.allTasks.push(action.newTask);
+        break;
     }
   });
 }
