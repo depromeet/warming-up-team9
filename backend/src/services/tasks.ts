@@ -24,11 +24,11 @@ export const editTask = async (args: { taskId: string; title: string }) => {
 
 export const getTask = async (args: { owner: string; taskId: string }) => {
     const { owner, taskId } = args;
-    const task = (await db.Tasks.findOne({ _id: taskId })) as TasksDocument;
+    const task = (await db.Tasks.findOne({ _id: taskId, state: { $ne: TaskStates.DELETE } })) as TasksDocument;
     if (!task) {
         throw createHttpError(400, { code: 200, message: "존재하지 않는 task" });
     }
-    if (task.owner !== owner) {
+    if (task.owner.toString() !== owner) {
         throw createHttpError(403);
     }
     return task;
@@ -58,8 +58,8 @@ export const deleteTask = async (args: { owner: string; taskId: string }) => {
     if (!task) {
         throw createHttpError(400, { code: 200, message: "존재하지 않는 task" });
     }
-    if (task.owner !== owner) {
+    if (task.owner.toString() !== owner) {
         throw createHttpError(403);
     }
-    await db.Tasks.deleteOne({ _id: taskId });
+    await db.Tasks.updateOne({ _id: taskId }, { $set: { state: TaskStates.DELETE } });
 };
