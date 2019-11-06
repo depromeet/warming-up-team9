@@ -14,7 +14,8 @@ const router = (router: express.Router) => {
     router
         .route("/users/me/tasks/:taskId")
         .get([verifyTokenMiddleware, tasks.getTask])
-        .put([verifyTokenMiddleware, tasks.editTask]);
+        .put([verifyTokenMiddleware, tasks.editTask])
+        .delete([verifyTokenMiddleware, tasks.deleteTask]);
 
     return router;
 };

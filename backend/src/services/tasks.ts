@@ -51,3 +51,15 @@ export const getTasks = async (args: { owner: string; filter?: string }) => {
         };
     });
 };
+
+export const deleteTask = async (args: { owner: string; taskId: string }) => {
+    const { owner, taskId } = args;
+    const task = (await db.Tasks.findOne({ _id: taskId })) as TasksDocument;
+    if (!task) {
+        throw createHttpError(400, { code: 200, message: "존재하지 않는 task" });
+    }
+    if (task.owner !== owner) {
+        throw createHttpError(403);
+    }
+    await db.Tasks.deleteOne({ _id: taskId });
+};

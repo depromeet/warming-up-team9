@@ -63,3 +63,17 @@ export const getTasks: RequestHandler = async (req, res, next) => {
         next(err);
     }
 };
+
+export const deleteTask: RequestHandler = async (req, res, next) => {
+    try {
+        const { uid } = req.user;
+        const taskId = await Joi.string()
+            .required()
+            .validateAsync(req.params.taskId);
+
+        const tasks = await taskService.deleteTask({ owner: uid, taskId });
+        res.json(tasks);
+    } catch (err) {
+        next(err);
+    }
+};
