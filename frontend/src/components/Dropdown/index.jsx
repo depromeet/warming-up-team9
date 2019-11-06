@@ -2,68 +2,63 @@ import styled from '@emotion/styled';
 import React, { useState, useCallback } from 'react';
 import DropdownItem from '../DropdownItem'
 
-function Dropdown( {suggestions, addSuggestion} ) {
+function Dropdown( {allTasks, addTask} ) {
   
-  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
-  const [filteredSuggestions, setfilteredSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedTaskIndex, setSelectedTaskIndex] = useState(-1);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [showTasks, setShowTasks] = useState(false);
   const [userInput, setUserInput] = useState("");
   const [inputPlaceholder, setInputPlaceholder] = useState("해야할 Task를 적어주세요");
 
   // TODO: 더 나은 필터 방식 적용하기
   const onInputChange = useCallback(
     e => {
-      setfilteredSuggestions(prev => {
-        if (!suggestions.length) {
+      setFilteredTasks(prev => {
+        if (!allTasks.length) {
           return prev;
         }
-        return suggestions.filter(s => (
-          s.toLowerCase().indexOf(userInput.toLowerCase()) > -1)
+        return allTasks.filter(task => (
+          task.title.toLowerCase().indexOf(userInput.toLowerCase()) > -1)
       )});
-      setActiveSuggestionIndex(-1);
-      setShowSuggestions(true);
+      setSelectedTaskIndex(-1);
+      setShowTasks(true);
       setUserInput(e.target.value);
     },
-    [suggestions, setfilteredSuggestions, setShowSuggestions, userInput]
+    [allTasks, setFilteredTasks, setShowTasks, userInput]
   );
 
-  const onClickSuggestion = e => {
-    setActiveSuggestionIndex(-1);
-    setfilteredSuggestions([]);
-    setShowSuggestions(false);
+  const onClickTask = e => {
+    setSelectedTaskIndex(-1);
+    setFilteredTasks([]);
+    setShowTasks(false);
     setUserInput(e.target.innerText);
   };
 
   const onKeyPress = e => {
     // enter key 눌렀을 경우,
     if (e.keyCode === 13) {
-      setShowSuggestions(false);
-      setUserInput(filteredSuggestions[activeSuggestionIndex]);
-      setActiveSuggestionIndex(-1);
+      setShowTasks(false);
+      setUserInput(filteredTasks[selectedTaskIndex].title);
+      setSelectedTaskIndex(-1);
     }
+
     // ↑ key 눌렀을 경우, 
     else if (e.keyCode === 38) {
-      if (activeSuggestionIndex === -1) {
-        setActiveSuggestionIndex(filteredSuggestions.length - 1);
-        setUserInput("");
-      }
-      setUserInput(filteredSuggestions[activeSuggestionIndex - 1]);
-      setActiveSuggestionIndex(activeSuggestionIndex - 1);
+      const prevIndex = (selectedTaskIndex - 1 + filteredTasks.length) % filteredTasks.length;
+      setUserInput(filteredTasks[prevIndex].title);
+      setSelectedTaskIndex(prevIndex);
     }
     // ↓ key 눌렀을 경우,
     else if (e.keyCode === 40) {
-      if (activeSuggestionIndex - 1 === filteredSuggestions.length) {
-        setActiveSuggestionIndex(-1);
-        setUserInput("");
-      }
-      setUserInput(filteredSuggestions[activeSuggestionIndex + 1]);
-      setActiveSuggestionIndex(activeSuggestionIndex + 1);
+      const nextIndex = (selectedTaskIndex + 1 + filteredTasks.length) % filteredTasks.length;
+      setUserInput(filteredTasks[nextIndex].title);
+      setSelectedTaskIndex(nextIndex);
     }
   };
 
-  const addNewSuggestion = () => {
+  const addNewTask = () => {
     if (userInput.trim().length > 0) {
-      addSuggestion(userInput);
+      addTask(userInput);
     } else {
       setInputPlaceholder("빈 Task는 추가할 수 없습니다");
     }
@@ -80,13 +75,17 @@ function Dropdown( {suggestions, addSuggestion} ) {
           onKeyDown={onKeyPress}
           value={userInput}
         />
-        <Button onClick={addNewSuggestion}>추가하기</Button>
+        <Button onClick={addNewTask}>추가하기</Button>
       </Top>
       <br />
-      {(showSuggestions && userInput && filteredSuggestions.length) ? (
+      {(showTasks && userInput && filteredTasks.length) ? (
         <UnorderedList>
-          {filteredSuggestions.map(suggestion => (
-            <DropdownItem key={suggestion} suggestion={suggestion} onClickSuggestion={onClickSuggestion} />
+          {filteredTasks.map(task => (
+            <DropdownItem 
+              key={task.taskId} 
+              label={task.title} 
+              suggestion={task.title} 
+              onClickSuggestion={onClickTask} />
          ))}
         </UnorderedList>
       ) : null
