@@ -77,9 +77,8 @@ function Dropdown( {allTasks, addTask} ) {
         />
         <Button onClick={addNewTask}>추가하기</Button>
       </Top>
-      <br />
       {(showTasks && userInput && filteredTasks.length) ? (
-        <UnorderedList>
+        <UnorderedList show={showTasks}>
           {filteredTasks.map(task => (
             <DropdownItem 
               key={task.taskId} 
@@ -98,8 +97,8 @@ export default React.memo(Dropdown);
 
 const Wrapper = styled.div`
   width: 584px;
-  height: 340px;
   box-sizing: border-box;
+  padding: 0;
   margin: auto;
 `;
 
@@ -142,9 +141,14 @@ const Button = styled.button`
 `;
 
 const UnorderedList = styled.ul`
+  display: ${props => props.show ? 'block' : 'none'};
   width: 584px;
   height: 287px;
+  margin-top: 10px;
+  background-color: white;
   list-style-type: none;
+  position: absolute;
+  z-index: 1;
   overflow-y: auto;
   overflow-x: hidden;
   ::-webkit-scrollbar {

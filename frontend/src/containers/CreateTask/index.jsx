@@ -18,7 +18,9 @@ function CreateTask() {
         <br />
         <strong>지금 해야 할 일을 추가해볼까요?</strong>
       </Title>
-      <TaskForm />
+      <SelectTask>
+        <TaskForm />
+      </SelectTask>
       <Bottom>
         <SkipButton>건너뛸래요</SkipButton>
         <CompleteButton>작성완료</CompleteButton>
@@ -49,10 +51,15 @@ const Title = styled.h1`
   color: #61676f;
 `;
 
+const SelectTask = styled.div`
+  height: 342px;
+  margin-bottom: 38px;
+`;
+
 const Bottom = styled.div`
   width: 484px;
   box-sizing: border-box;
-  padding: 38px 0;
+  padding: 0;
   margin: auto;
   display: flex;
   justify-content: space-between;
