@@ -1,6 +1,7 @@
 import express from "express";
 import * as users from "./users";
 import * as tasks from "./tasks";
+import * as schedules from "./schedules";
 import { verifyTokenMiddleware } from "../middlewares";
 
 const router = (router: express.Router) => {
@@ -17,6 +18,7 @@ const router = (router: express.Router) => {
         .put([verifyTokenMiddleware, tasks.editTask])
         .delete([verifyTokenMiddleware, tasks.deleteTask]);
     router.route("/users/me/tasks/:taskId/done").post([verifyTokenMiddleware, tasks.completeTask]);
+    router.route("/users/me/schedules").post([verifyTokenMiddleware, schedules.addSchedule]);
 
     return router;
 };
