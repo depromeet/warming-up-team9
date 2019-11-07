@@ -8,8 +8,14 @@ function CreateTask() {
 
   const user = useSelector(selectUser);
 
-  // TODO: 메인 화면으로 넘어가기
-  const nextPage = () => { }
+  // 따로 CreateTaskModal을 만들까? (= button + modal containing createTask(isModalForm prop))
+
+  // TODO: isModalForm prop 받아서 <Title /> 스타일링 조건부로 적용하기
+  //       -> illustration, title 글귀, 위아래 margin 차이
+
+  // TODO: isModalForm prop 받아서 제일 아래 두 버튼 onClick 적용하기
+  //       -> 메인 화면으로 넘어가기, 모달 화면 닫기
+  const handleClick = () => { }
 
   return (
     <Wrapper>
