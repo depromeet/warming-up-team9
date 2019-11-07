@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import config from "../config";
 import Users from "./users";
 import Tasks from "./tasks";
+import Schedules from "./schedules";
 
 const env: string = process.env.NODE_ENV || "development";
 
@@ -20,4 +21,5 @@ export const init = async () => {
 export const db = {
     Users,
     Tasks,
+    Schedules,
 };
