@@ -10,7 +10,7 @@ function AllTaskList({ tasks }: Props) {
   return (
     <>
       {tasks.map(task => (
-        <AllTaskListItem key={task.taskId} label={task.title} completed={task.state === 'COMPLETED'} />
+        <AllTaskListItem key={task.taskId} label={task.title} completed={task.state === 'DONE'} />
       ))}
     </>
   );
