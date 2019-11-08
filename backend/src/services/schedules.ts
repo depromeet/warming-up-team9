@@ -24,7 +24,7 @@ export const addSchedule = async (args: {
 
     const schedulesInDate = (await db.Schedules.find({ owner, scheduleDate })) as ScheduleDocument[];
 
-    if (schedulesInDate.find(schedule => schedule.taskId === taskId)) {
+    if (schedulesInDate.find(schedule => schedule.taskId.toString() === taskId)) {
         throw createHttpError(400, { code: 202, message: "이미 해당일에 등록된 task" });
     }
 
