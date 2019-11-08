@@ -49,3 +49,11 @@ export async function login(email, password) {
   const { data } = await axios.post(`${API_ROOT}/auth/login`, { email, password });
   return data.token;
 }
+
+export async function playScheduleAPI(scheduleId) {
+  await axios.post(`${API_ROOT}/users/me/schedules/${scheduleId}/start`);
+}
+
+export async function completeScheduleAPI(scheduleId) {
+  await axios.post(`${API_ROOT}/users/me/schedules/${scheduleId}/done`);
+}
