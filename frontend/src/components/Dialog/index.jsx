@@ -76,14 +76,17 @@ const Content = styled.div`
   background-color: #ffffff;
   overflow-x: hidden;
   overflow-y: auto;
+  position: relative;
 `;
 
 const CloseButton = styled.button`
   height: 18px;
   padding: 0;
-  position: relative;
-  left: 714px;
+  position: absolute;
+  right: 20px;
+  top: 24px;
   background-color: transparent;
   border: none;
   outline: none;
+  cursor: pointer;
 `;

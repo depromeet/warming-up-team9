@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import React, { memo } from 'react';
+import { useSelector } from 'react-redux';
 import { useTodayTimer } from '../../hooks';
+import { selectTodayAttainmentRate } from '../../stores/selectors/schedule';
 
 interface Props {
   className?: string;
@@ -8,6 +10,7 @@ interface Props {
 
 function Today({ className }: Props) {
   const { date, time } = useTodayTimer();
+  const attainmentRate = useSelector(selectTodayAttainmentRate);
 
   return (
     <Wrapper className={className}>
@@ -16,7 +19,7 @@ function Today({ className }: Props) {
         <Time>{time}</Time>
       </Top>
       <Bottom>
-        <Percent>0%</Percent>
+        <Percent>{attainmentRate}%</Percent>
         <Description>오늘 하루 달성량</Description>
       </Bottom>
     </Wrapper>
