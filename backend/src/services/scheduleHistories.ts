@@ -2,8 +2,8 @@ import { ScheduleHistory, ScheduleHistoryDocument, ScheduleHistoryState } from "
 import { db } from "../models";
 import createHttpError = require("http-errors");
 
-export const addHistory = async (arg: Omit<ScheduleHistory, "createdAt">) => {
-    const { taskId, scheduleId, state, owner } = arg;
+export const addHistory = async (arg: ScheduleHistory) => {
+    const { taskId, scheduleId, state, owner, createdAt } = arg;
     const previousHistory = (await db.ScheduleHistories.find({
         taskId,
         scheduleId,
@@ -43,6 +43,7 @@ export const addHistory = async (arg: Omit<ScheduleHistory, "createdAt">) => {
         scheduleId,
         owner,
         state,
+        createdAt,
     });
     await history.save();
     return history;

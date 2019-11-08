@@ -11,7 +11,7 @@ export type Schedules = {
     taskId: string | Tasks;
     owner: string;
     estimatedHour: number;
-    playedTimeSec: number;
+    processTimeSec: number;
     scheduleDate: Date;
     review: string;
     createdAt: Date;
@@ -25,7 +25,7 @@ const schema = new mongoose.Schema(
         taskId: { type: mongoose.Schema.Types.ObjectId, ref: "Tasks" },
         owner: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
         estimatedHour: { type: Number, min: 1, max: 12 },
-        playedTimeSec: { type: Number, default: 0 },
+        processTimeSec: { type: Number, default: 0 },
         scheduleDate: { type: Date },
         review: { type: String },
         state: {

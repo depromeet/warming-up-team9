@@ -3,7 +3,7 @@ import { ScheduleDocument, ScheduleStates } from "../models/schedules";
 import { TasksDocument, TaskStates } from "../models/tasks";
 import { Moment } from "moment";
 import { scheduleHistoryService } from "./index";
-import { ScheduleHistoryState } from "../models/scheduleHistories";
+import { ScheduleHistoryDocument, ScheduleHistoryState } from "../models/scheduleHistories";
 import createHttpError = require("http-errors");
 
 const HOUR_LIMIT_PER_DAY = 12;
@@ -52,7 +52,7 @@ export const getSchedule = async (arg: { owner: string; date: Date }) => {
                 taskId: schedule.taskId._id,
                 title: schedule.taskId.title,
                 estimatedHour: schedule.estimatedHour,
-                processTimeSec: schedule.playedTimeSec,
+                processTimeSec: schedule.processTimeSec,
                 state: schedule.state,
             };
         }
@@ -98,6 +98,14 @@ export const handleScheduleHistory = async (args: {
         throw createHttpError(403);
     }
 
+    const createdAt = new Date();
+
+    const lastScheduleHistory = (await db.ScheduleHistories.findOne({
+        owner,
+        scheduleId,
+        taskId: schedule.taskId,
+    })) as ScheduleHistoryDocument;
+
     switch (scheduleHistoryState) {
         case ScheduleHistoryState.START: {
             if (schedule.state !== ScheduleStates.READY) {
@@ -110,6 +118,8 @@ export const handleScheduleHistory = async (args: {
             if (schedule.state !== ScheduleStates.PROCESSING) {
                 throw createHttpError(400, { code: 307, message: "이미 시작한 스케줄" });
             }
+            const processTimeSec = (createdAt.valueOf() - lastScheduleHistory.createdAt.valueOf()) / 1000;
+            schedule.processTimeSec += processTimeSec;
             schedule.state = ScheduleStates.DONE;
             break;
         }
@@ -123,6 +133,8 @@ export const handleScheduleHistory = async (args: {
             if (schedule.state !== ScheduleStates.PROCESSING) {
                 throw createHttpError(400, { code: 309, message: "중지 할 수 없는 상태" });
             }
+            const processTimeSec = (createdAt.valueOf() - lastScheduleHistory.createdAt.valueOf()) / 1000;
+            schedule.processTimeSec += processTimeSec;
             break;
         }
         default: {
@@ -135,6 +147,7 @@ export const handleScheduleHistory = async (args: {
         scheduleId,
         taskId: schedule.taskId.toString(),
         state: scheduleHistoryState,
+        createdAt,
     });
     await schedule.save();
 };
