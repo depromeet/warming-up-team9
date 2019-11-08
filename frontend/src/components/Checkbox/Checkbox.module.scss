@@ -22,11 +22,14 @@
         margin-right: 10px;
       }
       &:checked + .label-text:before{
-        content: "!";
+        content: "";
+        background-image: url("../../static/images/check.png");
+        background-repeat: no-repeat;
+        background-size: 70% 45%;
+        background-position: 50%;
         display: inline-block;
         width: 14px;
         height: 14px;
-        background: #ff5001;
         border: 1px solid #df4703;
         border-radius: 3px;
         color: #dddfe6;
