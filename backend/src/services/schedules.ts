@@ -38,3 +38,18 @@ export const addSchedule = async (args: {
     });
     await schedule.save();
 };
+
+export const getSchedule = async (arg: { owner: string; date: Date }) => {
+    const { owner, date } = arg;
+    const schedules = (await db.Schedules.find({ owner, scheduleDate: date }).populate("taskId")) as ScheduleDocument[];
+    return schedules.map(schedule => {
+        if (typeof schedule.taskId !== "string") {
+            return {
+                taskId: schedule.taskId._id,
+                title: schedule.taskId.title,
+                estimatedHour: schedule.estimatedHour,
+                processTimeSec: schedule.playedTimeSec,
+            };
+        }
+    });
+};

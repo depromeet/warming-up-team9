@@ -21,6 +21,7 @@ const router = (router: express.Router) => {
         .delete([verifyTokenMiddleware, tasks.deleteTask]);
     router.route("/users/me/tasks/:taskId/done").post([verifyTokenMiddleware, tasks.completeTask]);
     router.route("/users/me/schedules").post([verifyTokenMiddleware, schedules.addSchedule]);
+    router.route("/users/me/schedules/:targetDate").get([verifyTokenMiddleware, schedules.getSchedule]);
 
     return router;
 };

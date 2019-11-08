@@ -23,3 +23,16 @@ export const addSchedule: RequestHandler = async (req, res, next) => {
         next(err);
     }
 };
+
+export const getSchedule: RequestHandler = async (req, res, next) => {
+    try {
+        const targetDate = await Joi.string().validateAsync(req.params.targetDate);
+        const date = moment(targetDate)
+            .startOf("day")
+            .toDate();
+        const schedules = await scheduleService.getSchedule({ owner: req.user.uid, date });
+        res.json(schedules);
+    } catch (err) {
+        next(err);
+    }
+};
