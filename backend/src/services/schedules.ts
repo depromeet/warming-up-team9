@@ -46,10 +46,12 @@ export const getSchedule = async (arg: { owner: string; date: Date }) => {
     return schedules.map(schedule => {
         if (typeof schedule.taskId !== "string") {
             return {
+                scheduleId: schedule._id,
                 taskId: schedule.taskId._id,
                 title: schedule.taskId.title,
                 estimatedHour: schedule.estimatedHour,
                 processTimeSec: schedule.playedTimeSec,
+                state: schedule.state,
             };
         }
     });
