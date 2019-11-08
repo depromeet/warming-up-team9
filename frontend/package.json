@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.9",
+    "@types/lodash.range": "^3.2.6",
     "@types/react-redux": "^7.1.5",
     "@types/react-router-dom": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^2.3.3",
