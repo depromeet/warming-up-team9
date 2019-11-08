@@ -10,7 +10,7 @@ import { selectAllTasks, selectAuthToken, selectIsAllTasksLoaded } from '../../s
 import { createNewTask, fetchAllTasks } from '../../remotes/api';
 import Dropdown from '../../components/Dropdown';
 
-function TaskForm({ fetchInput }) {
+function TaskForm({ fetchInput, showAddButton = true }) {
   const dispatch = useDispatch();
 
   const authToken = useSelector(selectAuthToken);
@@ -45,7 +45,14 @@ function TaskForm({ fetchInput }) {
       });
   }, [dispatch, authToken, isAllTasksLoaded]);
 
-  return <Dropdown allTasks={allTasks} addTask={newTask => postNewTask(newTask)} fetchInput={fetchInput} />;
+  return (
+    <Dropdown
+      showAddButton={showAddButton}
+      allTasks={allTasks}
+      addTask={newTask => postNewTask(newTask)}
+      fetchInput={fetchInput}
+    />
+  );
 }
 
 export default React.memo(TaskForm);

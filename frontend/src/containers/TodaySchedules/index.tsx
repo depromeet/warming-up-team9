@@ -26,7 +26,7 @@ function TodaySchedules({ className }: Props) {
         <Title>
           안녕하세요 {user!.nickname}님!
           <br />
-          <strong>오늘 하루 계획 세울 준비 되셨나요?</strong>
+          <strong>{schedules.length === 0 ? '오늘 하루 계획 세울 준비 되셨나요?' : '힘차게 달려볼까요?'}</strong>
         </Title>
         <Button onClick={toggleDialog}>오늘 할일 추가하기</Button>
         <Dialog show={show} handleClose={toggleDialog}>

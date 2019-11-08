@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React, { useState, useCallback } from 'react';
 import DropdownItem from '../DropdownItem';
 
-function Dropdown({ allTasks, addTask, fetchInput }) {
+function Dropdown({ allTasks, addTask, fetchInput, showAddButton = true }) {
   const [selectedTaskIndex, setSelectedTaskIndex] = useState(-1);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [showTasks, setShowTasks] = useState(false);
@@ -78,7 +78,7 @@ function Dropdown({ allTasks, addTask, fetchInput }) {
           onKeyDown={onKeyPress}
           value={userInput}
         />
-        <Button onClick={addNewTask}>추가하기</Button>
+        {showAddButton && <Button onClick={addNewTask}>추가하기</Button>}
       </Top>
       {showTasks && userInput && filteredTasks.length ? (
         <UnorderedList show={showTasks}>
