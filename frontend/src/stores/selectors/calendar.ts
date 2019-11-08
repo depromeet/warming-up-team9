@@ -7,3 +7,8 @@ export const selectCalendarMonth = createSelector(
   selectCalendarState,
   state => state.month
 );
+
+export const selectCalendarSchedules = createSelector(
+  selectCalendarState,
+  state => state.schedules
+);
