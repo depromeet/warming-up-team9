@@ -17,7 +17,7 @@ class SignUpFormContainer extends Component {
     }
 
     const checkPassword = (cpw) => {
-      if (this.state.password !== cpw) {
+      if (this.state.password !== cpw || this.state.password === '') {
         return false;
       } else {
         return true;
