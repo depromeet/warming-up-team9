@@ -18,6 +18,10 @@ export default function Main() {
     }
   }, [dispatch, isScheduleInitialized]);
 
+  if (!isScheduleInitialized) {
+    return null;
+  }
+
   return (
     <Wrapper>
       <Grid>
