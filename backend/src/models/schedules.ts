@@ -1,13 +1,22 @@
 import * as mongoose from "mongoose";
+import { Tasks } from "./tasks";
 
-export type ScheduleDocument = mongoose.Document & {
-    taskId: string;
+export enum ScheduleStates {
+    "READY" = "READY",
+    "PENDING" = "PENDING",
+    "DONE" = "DONE",
+}
+
+export type Schedules = {
+    taskId: string | Tasks;
     owner: string;
     estimatedHour: number;
     playedTimeSec: number;
     scheduleDate: Date;
     createdAt: Date;
 };
+
+export type ScheduleDocument = mongoose.Document & Schedules;
 
 const schema = new mongoose.Schema(
     {
@@ -17,6 +26,11 @@ const schema = new mongoose.Schema(
         playedTimeSec: { type: Number, default: 0 },
         scheduleDate: { type: Date },
         review: { type: String },
+        state: {
+            type: String,
+            enum: [ScheduleStates.READY, ScheduleStates.DONE, ScheduleStates.PENDING],
+            default: ScheduleStates.READY,
+        },
     },
     {
         timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },

@@ -5,22 +5,7 @@ import { db } from "../models";
 import { auth } from "../controllers";
 import { UsersDocument } from "../models/users";
 
-export interface SignUpArg {
-    email: string;
-    nickname: string;
-    password: string;
-}
-
-export interface LoginArg {
-    email: string;
-    password: string;
-}
-
-export interface GetUserArg {
-    uid: string;
-}
-
-export const signUp = async (args: SignUpArg) => {
+export const signUp = async (args: { email: string; nickname: string; password: string }) => {
     const { email, nickname, password } = args;
     const [duplicatedEmailUser, duplicatedNicknameUser] = await Promise.all([
         db.Users.findOne({ email }),
@@ -47,7 +32,7 @@ export const signUp = async (args: SignUpArg) => {
     });
 };
 
-export const login = async (args: LoginArg) => {
+export const login = async (args: { email: string; password: string }) => {
     const { email, password } = args;
     const user = (await db.Users.findOne({ email })) as UsersDocument;
     if (!user) {
@@ -66,7 +51,7 @@ export const login = async (args: LoginArg) => {
     });
 };
 
-export const getUser = async (args: GetUserArg) => {
+export const getUser = async (args: { uid: string }) => {
     const { uid: _id } = args;
     const user = (await db.Users.findOne({ _id })) as UsersDocument;
     if (!user) {

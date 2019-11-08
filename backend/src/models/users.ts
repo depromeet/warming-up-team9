@@ -1,10 +1,12 @@
 import * as mongoose from "mongoose";
 
-export type UsersDocument = mongoose.Document & {
+export type Users = {
     email: string;
     nickname: string;
     passwordHash: string;
 };
+
+export type UsersDocument = mongoose.Document & Users;
 
 export type TokenPayload = {
     uid: string;

@@ -2,7 +2,6 @@ import { RequestHandler } from "express";
 import Joi from "@hapi/joi";
 import createHttpError from "http-errors";
 import { userService } from "../../services";
-import { LoginArg, SignUpArg, GetUserArg } from "../../services/users";
 
 export const login: RequestHandler = async (req, res, next) => {
     try {
@@ -13,7 +12,7 @@ export const login: RequestHandler = async (req, res, next) => {
             password: Joi.string().required(),
         });
 
-        const loginArgs: LoginArg = await schema.validateAsync(req.body).catch(err => {
+        const loginArgs = await schema.validateAsync(req.body).catch(err => {
             throw createHttpError(400, err.message);
         });
 
@@ -43,7 +42,7 @@ export const signUp: RequestHandler = async (req, res, next) => {
                 .alphanum()
                 .required(),
         });
-        const signUpArgs: SignUpArg = await schema.validateAsync(req.body).catch(err => {
+        const signUpArgs = await schema.validateAsync(req.body).catch(err => {
             throw createHttpError(400, err.message);
         });
 
@@ -56,7 +55,7 @@ export const signUp: RequestHandler = async (req, res, next) => {
 
 export const getUser: RequestHandler = async (req, res, next) => {
     try {
-        const getUserArgs: GetUserArg = { uid: req.user.uid };
+        const getUserArgs = { uid: req.user.uid };
         const userInfo = await userService.getUser(getUserArgs);
         res.json({
             email: userInfo.email,

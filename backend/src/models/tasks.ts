@@ -6,12 +6,15 @@ export enum TaskStates {
     "DELETE" = "DELETE",
 }
 
-export type TasksDocument = mongoose.Document & {
+export type Tasks = {
+    _id: string;
     title: string;
     state: TaskStates;
     owner: string;
     createdAt: Date;
 };
+
+export type TasksDocument = mongoose.Document & Tasks;
 
 const schema = new mongoose.Schema(
     {
