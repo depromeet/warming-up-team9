@@ -1,36 +1,56 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import TaskForm from '../TaskForm';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../stores/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAuthToken, selectUser } from '../../stores/selectors';
 import illustration from './illustration.png';
 import illustration2x from './illustration@2x.png';
 import illustration3x from './illustration@3x.png';
+import { addNewTaskAction, loadAllTasksFailAction } from '../../stores/actions';
+import { createNewTask } from '../../remotes/api';
 
-function CreateTask( {onButtonClick} ) {
-
+function CreateTask({ onClose }) {
+  const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const authToken = useSelector(selectAuthToken);
+
+  const [taskInput, setTaskInput] = useState('');
+  const addTask = useCallback(async () => {
+    try {
+      const newTask = await createNewTask(authToken, taskInput);
+      dispatch(addNewTaskAction(newTask));
+      onClose();
+    } catch (error) {
+      alert(error.message);
+      dispatch(loadAllTasksFailAction(error));
+    }
+  }, [authToken, taskInput, onClose, dispatch]);
 
   return (
     <Wrapper>
       <Title>
         <Illustration role="img">
-          <img src={illustration3x} srcSet={`${illustration} 1x, ${illustration2x} 2x, ${illustration3x} 3x`} alt="" aria-hidden={true} />
+          <img
+            src={illustration3x}
+            srcSet={`${illustration} 1x, ${illustration2x} 2x, ${illustration3x} 3x`}
+            alt=""
+            aria-hidden={true}
+          />
         </Illustration>
         환영합니다, {user.nickname}님!
         <br />
         <strong>해야 할 일을 추가해볼까요?</strong>
       </Title>
       <SelectTask>
-        <TaskForm />
+        <TaskForm fetchInput={setTaskInput} showAddButton={false} />
       </SelectTask>
       <Bottom>
-        <SkipButton onClick={onButtonClick}>건너뛸래요</SkipButton>
-        <CompleteButton onClick={onButtonClick}>작성완료</CompleteButton>
+        <SkipButton onClick={onClose}>건너뛸래요</SkipButton>
+        <CompleteButton onClick={addTask}>작성완료</CompleteButton>
       </Bottom>
     </Wrapper>
-  )
-};
+  );
+}
 
 export default React.memo(CreateTask);
 
@@ -55,7 +75,6 @@ const Title = styled.h1`
   box-sizing: border-box;
   padding-bottom: 47px;
   margin: auto;
-  font-family: SpoqaHanSans;
   font-weight: 300;
   font-size: 28px;
   font-stretch: normal;
@@ -80,7 +99,7 @@ const Bottom = styled.div`
   margin: auto;
   display: flex;
   justify-content: space-between;
-`
+`;
 
 const SkipButton = styled.div`
   height: 50px;

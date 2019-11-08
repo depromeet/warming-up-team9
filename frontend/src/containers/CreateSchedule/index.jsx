@@ -1,78 +1,116 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import TaskForm from '../TaskForm'
+import range from 'lodash.range';
+import TaskForm from '../TaskForm';
 import { useTodayTimer } from '../../hooks';
-import { MAX_TIME } from './timeLimits';
-import decreaseIcon from './decreaseIcon.svg'
-import increaseIcon from './increaseIcon.svg'
+import decreaseIcon from './decreaseIcon.svg';
+import increaseIcon from './increaseIcon.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { format } from 'date-fns';
+import { selectTodayAssignedHours } from '../../stores/selectors/schedule';
+import { selectAllTasks, selectAuthToken } from '../../stores/selectors';
+import { addSchedule } from '../../remotes/api';
+import { addTodayScheduleAction } from '../../stores/actions/schedule';
 
-export default function Schedule() {
-
+export default function CreateSchedule({ onClose }) {
   const { date } = useTodayTimer();
   const todayDate = date.substr(0, 7);
+
+  const dispatch = useDispatch();
+  const authToken = useSelector(selectAuthToken);
+  const allTasks = useSelector(selectAllTasks);
 
   const [inputTask, setInputTask] = useState('');
   const [blockTime, setBlockTime] = useState(0);
 
-  const fetchInput = (inputValue) => {
+  const todayAssignedHours = useSelector(selectTodayAssignedHours);
+  const availableHours = useMemo(() => 12 - todayAssignedHours, [todayAssignedHours]);
+
+  const fetchInput = inputValue => {
     setInputTask(inputValue);
-  }
+  };
 
-  const increaseTimeBlock = () => {
-    const next = (blockTime + 1 + MAX_TIME) % MAX_TIME;
-    setBlockTime(next);
-  }
+  const increaseTimeBlock = useCallback(() => {
+    setBlockTime(prev => {
+      if (prev < availableHours) {
+        return prev + 1;
+      }
+      return prev;
+    });
+  }, [availableHours]);
 
-  const decreaseTimeBlock = () => {
-    const prev = (blockTime - 1 + MAX_TIME) % MAX_TIME;
-    setBlockTime(prev);
-  }
+  const decreaseTimeBlock = useCallback(() => {
+    setBlockTime(prev => (prev > 0 ? prev - 1 : prev));
+  }, []);
+
+  const createSchedule = useCallback(async () => {
+    const task = allTasks.find(t => t.title === inputTask);
+
+    if (task == null || blockTime === 0) {
+      return;
+    }
+
+    const scheduleDate = format(new Date(), 'yyyy-MM-dd');
+
+    try {
+      await addSchedule(authToken, {
+        scheduleDate,
+        taskId: task.taskId,
+        estimatedHour: blockTime,
+      });
+
+      dispatch(addTodayScheduleAction());
+      onClose();
+    } catch (error) {
+      alert(error.message);
+    }
+  }, [dispatch, authToken, allTasks, inputTask, blockTime, onClose]);
 
   return (
     <Wrapper>
       <Top>
-        <Date>{todayDate}</Date>
+        <DateStr>{todayDate}</DateStr>
         <Title>
-          {/* TODO: 블록 배분에 따라 '~비어있어요' 있고 없고 설정 */}
-          오늘의 블록이 비어있어요
-          <br />
-          <strong>Task를 추가해서 일정관리를 시작해봐요!</strong>
+          {blockTime > 0 ? (
+            <b>당신의 알찬 하루를 도와줄게요!</b>
+          ) : (
+            <>
+              오늘의 블록이 비어있어요
+              <br />
+              <strong>Task를 추가해서 일정관리를 시작해봐요!</strong>
+            </>
+          )}
         </Title>
       </Top>
       <ColorBlocks>
         <BlockHead>
-          하루에 12시간 일해요
-        <BlockDescription>
-          <BlockUnit/>
-          &#61; 1시간
-        </BlockDescription>
+          {blockTime > 0 ? `오늘 ${blockTime}시간 일해요` : '하루에 12시간 일해요'}
+          <BlockDescription>
+            <BlockUnit />
+            &#61; 1시간
+          </BlockDescription>
         </BlockHead>
-        {/* TODO: 블록 색깔 배분하기 */}
         <Blocks>
-          <Block color={'filled'} />
-          <Block color={'scheduling'} />
-          <Block />
-          <Block />
-          <Block />
-          <Block />
-          <Block />
-          <Block />
-          <Block />
-          <Block />
-          <Block />
-          <Block />
+          {range(todayAssignedHours).map((_, i) => (
+            <Block key={`filled-${i}`} color="filled" />
+          ))}
+          {range(blockTime).map((_, i) => (
+            <Block key={`scheduling-${i}`} color="scheduling" />
+          ))}
+          {range(availableHours - blockTime).map((_, i) => (
+            <Block key={`available-${i}`} />
+          ))}
         </Blocks>
       </ColorBlocks>
       <Hr />
       <TaskSelect>
         <SmallHead>Task</SmallHead>
-        <TaskForm fetchInput={fetchInput}/>
+        <TaskForm fetchInput={fetchInput} />
       </TaskSelect>
-      {/* TODO: 블록 개수 배분하기 */}
       <SelectTimeBlock>
         <SmallHead>Block(시간) 배분하기</SmallHead>
         <SetTime>
-          <InputTime type="text" value={blockTime}/>
+          <InputTime type="text" value={blockTime} readOnly={true} />
           <ChangeTimeButton aria-label="한 시간 추가" onClick={increaseTimeBlock}>
             <img src={increaseIcon} alt="" aria-hidden={true} />
           </ChangeTimeButton>
@@ -82,7 +120,7 @@ export default function Schedule() {
           <TimeDescription>시간이 걸릴것 같아요</TimeDescription>
         </SetTime>
       </SelectTimeBlock>
-      <CompleteButton>시간 배분 완료하기</CompleteButton>
+      <CompleteButton onClick={createSchedule}>시간 배분 완료하기</CompleteButton>
     </Wrapper>
   );
 }
@@ -90,12 +128,13 @@ export default function Schedule() {
 const Wrapper = styled.div`
   width: 584px;
   display: grid;
-  grid-template-column: (5, 1fr);
+  grid-template-column: repeat(5, 1fr);
   grid-gap: 12px;
   justify-content: center;
   box-sizing: border-box;
   margin: auto;
   color: #61676f;
+  padding-top: 48px;
 `;
 
 const Top = styled.div`
@@ -104,7 +143,7 @@ const Top = styled.div`
   text-align: center;
 `;
 
-const Date = styled.span`
+const DateStr = styled.span`
   font-size: 40px;
   font-weight: 300;
   font-stretch: normal;
@@ -175,11 +214,8 @@ const Block = styled.div`
   width: 42px;
   height: 42px;
   border-radius: 3px;
-  background-color: ${props => (
-    props.color === 'filled' ? '#61676f'
-      : props.color === 'scheduling' ? '#ff5001'
-        : '#ffe8de'
-  )};
+  background-color: ${props =>
+    props.color === 'filled' ? '#61676f' : props.color === 'scheduling' ? '#ff5001' : '#ffe8de'};
 `;
 
 const Hr = styled.hr`
@@ -197,13 +233,11 @@ const TaskSelect = styled.div`
   margin-bottom: 21px;
 `;
 
-const SelectTimeBlock = styled.div`
-
-`;
+const SelectTimeBlock = styled.div``;
 
 const SetTime = styled.div`
   display: flex;
-  align-items:center;
+  align-items: center;
 `;
 
 const InputTime = styled.input`
@@ -221,6 +255,8 @@ const InputTime = styled.input`
   box-sizing: border-box;
   padding: 9px 15px;
   margin-right: 18px;
+  cursor: default;
+  user-select: none;
 `;
 
 const ChangeTimeButton = styled.button`
@@ -232,6 +268,7 @@ const ChangeTimeButton = styled.button`
   border-radius: 4px;
   background-color: #838e9b;
   margin-right: 8px;
+  cursor: pointer;
 `;
 
 const TimeDescription = styled.h3`

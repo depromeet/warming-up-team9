@@ -1,14 +1,13 @@
 import styled from '@emotion/styled';
 import React, { useState, useCallback } from 'react';
-import DropdownItem from '../DropdownItem'
+import DropdownItem from '../DropdownItem';
 
-function Dropdown( {allTasks, addTask, fetchInput} ) {
-  
+function Dropdown({ allTasks, addTask, fetchInput, showAddButton = true }) {
   const [selectedTaskIndex, setSelectedTaskIndex] = useState(-1);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [showTasks, setShowTasks] = useState(false);
-  const [userInput, setUserInput] = useState("");
-  const [inputPlaceholder, setInputPlaceholder] = useState("해야할 Task를 적어주세요");
+  const [userInput, setUserInput] = useState('');
+  const [inputPlaceholder, setInputPlaceholder] = useState('해야할 Task를 적어주세요');
 
   // TODO: 더 나은 필터 방식 적용하기
   const onInputChange = useCallback(
@@ -17,18 +16,17 @@ function Dropdown( {allTasks, addTask, fetchInput} ) {
         if (!allTasks.length) {
           return prev;
         }
-        return allTasks.filter(task => (
-          task.title.toLowerCase().indexOf(userInput.toLowerCase()) > -1)
-      )});
+        return allTasks.filter(task => task.title.toLowerCase().indexOf(userInput.toLowerCase()) > -1);
+      });
       setSelectedTaskIndex(-1);
       setShowTasks(true);
       setUserInput(e.target.value);
-      
+
       if (typeof fetchInput === 'function') {
         fetchInput(e.target.value);
       }
     },
-    [allTasks, setFilteredTasks, setShowTasks, userInput]
+    [allTasks, setFilteredTasks, setShowTasks, userInput, fetchInput]
   );
 
   const onClickTask = e => {
@@ -36,6 +34,7 @@ function Dropdown( {allTasks, addTask, fetchInput} ) {
     setFilteredTasks([]);
     setShowTasks(false);
     setUserInput(e.target.innerText);
+    fetchInput(e.target.innerText);
   };
 
   const onKeyPress = e => {
@@ -46,7 +45,7 @@ function Dropdown( {allTasks, addTask, fetchInput} ) {
       setSelectedTaskIndex(-1);
     }
 
-    // ↑ key 눌렀을 경우, 
+    // ↑ key 눌렀을 경우,
     else if (e.keyCode === 38) {
       const prevIndex = (selectedTaskIndex - 1 + filteredTasks.length) % filteredTasks.length;
       setUserInput(filteredTasks[prevIndex].title);
@@ -64,10 +63,10 @@ function Dropdown( {allTasks, addTask, fetchInput} ) {
     if (userInput.trim().length > 0) {
       addTask(userInput);
     } else {
-      setInputPlaceholder("빈 Task는 추가할 수 없습니다");
+      setInputPlaceholder('빈 Task는 추가할 수 없습니다');
     }
-    setUserInput("");
-  }
+    setUserInput('');
+  };
 
   return (
     <Wrapper>
@@ -79,22 +78,22 @@ function Dropdown( {allTasks, addTask, fetchInput} ) {
           onKeyDown={onKeyPress}
           value={userInput}
         />
-        <Button onClick={addNewTask}>추가하기</Button>
+        {showAddButton && <Button onClick={addNewTask}>추가하기</Button>}
       </Top>
-      {(showTasks && userInput && filteredTasks.length) ? (
+      {showTasks && userInput && filteredTasks.length ? (
         <UnorderedList show={showTasks}>
           {filteredTasks.map(task => (
-            <DropdownItem 
-              key={task.taskId} 
-              label={task.title} 
-              suggestion={task.title} 
-              onClickSuggestion={onClickTask} />
-         ))}
+            <DropdownItem
+              key={task.taskId}
+              label={task.title}
+              suggestion={task.title}
+              onClickSuggestion={onClickTask}
+            />
+          ))}
         </UnorderedList>
-      ) : null
-    }
+      ) : null}
     </Wrapper>
-  )
+  );
 }
 
 export default React.memo(Dropdown);
@@ -136,7 +135,7 @@ const Button = styled.button`
   padding: 0;
   padding-right: 7px;
   margin-top: 12px;
-  margin-bottom: 11px; 
+  margin-bottom: 11px;
   color: #ff5001;
   background-color: #f6f7f9;
   font-weight: bold;
@@ -146,7 +145,7 @@ const Button = styled.button`
 `;
 
 const UnorderedList = styled.ul`
-  display: ${props => props.show ? 'block' : 'none'};
+  display: ${props => (props.show ? 'block' : 'none')};
   width: 584px;
   max-height: 200px;
   margin-top: 10px;

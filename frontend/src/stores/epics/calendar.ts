@@ -33,8 +33,6 @@ const calendarSchedulesEpic: Epic = (action$, state$) =>
             const totalDays = differenceInDays(endDate, startDate);
             const parsed: CalendarDaySchedule = {};
 
-            console.log(schedules);
-
             for (let i = 0; i < totalDays; i += 1) {
               const yyyyMMdd = format(index, 'yyyyMMdd');
 

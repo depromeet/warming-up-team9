@@ -2,12 +2,12 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/app.js",
   "scripts": {
     "build": "npm run build-ts && npm run lint",
     "build-ts": "./node_modules/.bin/tsc --build tsconfig.json",
     "start": "node dist/index.js",
-    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
+    "lint": "tsc --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "./node_modules/.bin/tsc --build tsconfig.json -w"
@@ -15,17 +15,34 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.1",
+    "@types/hapi__joi": "^16.0.2",
+    "@types/http-errors": "^1.6.2",
+    "@types/jsonwebtoken": "^8.3.5",
+    "@types/mongoose": "^5.5.28",
+    "@types/morgan": "^1.7.37",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "concurrently": "^4.1.2",
     "eslint": "^6.2.2",
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-prettier": "^3.1.0",
-    "nodemon": "^1.19.1",
+    "nodemon": "^1.19.4",
     "prettier": "1.18.2",
+    "source-map-support": "^0.5.16",
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "@hapi/joi": "^16.1.7",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http-errors": "^1.7.3",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.7",
+    "morgan": "^1.9.1"
   }
 }
