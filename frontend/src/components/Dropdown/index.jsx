@@ -101,6 +101,7 @@ export default React.memo(Dropdown);
 
 const Wrapper = styled.div`
   width: 584px;
+  height: 100%;
   box-sizing: border-box;
   padding: 0;
   margin: auto;
@@ -147,7 +148,7 @@ const Button = styled.button`
 const UnorderedList = styled.ul`
   display: ${props => props.show ? 'block' : 'none'};
   width: 584px;
-  height: 287px;
+  max-height: 200px;
   margin-top: 10px;
   background-color: white;
   list-style-type: none;

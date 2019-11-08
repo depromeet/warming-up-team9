@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AllTaskList from '../../components/AllTaskList';
+import Dialog from '../../components/Dialog';
+import CreateTask from '../../containers/CreateTask';
 import { loadAllTasksAction, loadAllTasksFailAction, loadAllTasksSuccessAction } from '../../stores/actions';
 import { selectAllTasks, selectAuthToken, selectIsAllTasksLoaded } from '../../stores/selectors';
 import { fetchAllTasks } from '../../remotes/api';
@@ -11,6 +13,12 @@ interface Props {
 }
 
 function AllTasks({ className }: Props) {
+
+  const [show, setShow] = useState(false);
+  const handleClick = () => {
+    setShow(!show);
+  }
+
   const dispatch = useDispatch();
 
   const authToken = useSelector(selectAuthToken);
@@ -37,18 +45,21 @@ function AllTasks({ className }: Props) {
     <Wrapper className={className}>
       <Top>
         <Title>All Tasks</Title>
-        <Button>추가하기</Button>
+        <Button onClick={handleClick}>추가하기</Button>
+        <Dialog show={show} handleClose={handleClick}>
+          <CreateTask onButtonClick={handleClick}/>
+        </Dialog>
       </Top>
       <Bottom>
         {isAllTasksLoaded && allTasks.length > 0 ? (
           <AllTaskList tasks={allTasks} />
         ) : (
-          <Empty>
-            설정된 Task가 없습니다
+            <Empty>
+              설정된 Task가 없습니다
             <br />
-            Task를 만들어보세요
+              Task를 만들어보세요
           </Empty>
-        )}
+          )}
       </Bottom>
     </Wrapper>
   );

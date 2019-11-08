@@ -30,22 +30,24 @@ export default function Dialog({ show, handleClose, children }) {
 }
 
 const Wrapper = styled.div`
-  display: ${props => props.show ? 'block' : 'none'};
+  display: ${props => props.show ? 'flex' : 'none'};
+  align-items: ${props => props.show ? 'center' : 'none'};
   position: fixed;
   z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  padding-top: 72px;
   overflow: auto;
   background-color: rgba(97, 103, 111, 0.6);
 `;
 
 const Modal = styled.div`
   width: 784px;
-  height: 700px;
+  max-height: 716px;
+  height: 90%;
   box-sizing: border-box;
+  padding: 26px;
   margin: auto;
   border-radius: 10px;
   background-color: #ffffff;
@@ -55,8 +57,7 @@ const CloseButton = styled.button`
   height: 18px;
   padding: 0;
   position: relative;
-  top: 26px;
-  left: 740px;
+  left: 714px;
   background-color: transparent;
   border: none;
   outline: none;
