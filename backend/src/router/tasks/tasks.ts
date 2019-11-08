@@ -9,8 +9,16 @@ export const addTask: RequestHandler = async (req, res, next) => {
         });
         const { title } = await schema.validateAsync(req.body);
 
-        await taskService.addTask({ title, owner: req.user.uid });
-        res.sendStatus(201);
+        const { _id, title: titleCreated, state, createdAt } = await taskService.addTask({
+            title,
+            owner: req.user.uid,
+        });
+        res.status(201).json({
+            taskId: _id,
+            title: titleCreated,
+            state,
+            createdAt,
+        });
     } catch (err) {
         next(err);
     }
