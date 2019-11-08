@@ -24,14 +24,23 @@ export async function fetchAllTasks(authToken) {
 }
 
 export async function createNewTask(authToken, newTask) {
-  const { data } = await axios.post(`${API_ROOT}/users/me/tasks`, {
+  const { data } = await axios.post(
+    `${API_ROOT}/users/me/tasks`,
+    { title: newTask },
+    {
+      headers: {
+        Authorization: authToken,
+      },
+    }
+  );
+
+  return data;
+}
+
+export async function addSchedule(authToken, data) {
+  await axios.post(`${API_ROOT}/users/me/schedules`, data, {
     headers: {
       Authorization: authToken,
     },
-    body: {
-      title: newTask,
-    },
   });
-
-  return data;
 }

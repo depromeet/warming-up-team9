@@ -1,11 +1,23 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadTodaySchedulesAction } from '../../stores/actions/schedule';
+import { selectIsScheduleInitialized } from '../../stores/selectors/schedule';
 import AllTasks from '../AllTasks';
 import Calendar from '../Calendar';
 import Today from '../Today';
-import TodayTask from '../TodayTask';
+import TodaySchedules from '../TodaySchedules';
 
 export default function Main() {
+  const dispatch = useDispatch();
+  const isScheduleInitialized = useSelector(selectIsScheduleInitialized);
+
+  useEffect(() => {
+    if (!isScheduleInitialized) {
+      dispatch(loadTodaySchedulesAction());
+    }
+  }, [dispatch, isScheduleInitialized]);
+
   return (
     <Wrapper>
       <Grid>
@@ -16,7 +28,7 @@ export default function Main() {
           <AllTasks />
         </GridCell>
         <GridCell column="1 / 4" row="6 / 19">
-          <TodayTask />
+          <TodaySchedules />
         </GridCell>
         <GridCell column="4 / 6" row="10 / 19">
           <Calendar />

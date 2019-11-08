@@ -1,19 +1,22 @@
 import styled from '@emotion/styled';
-import React, { memo, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 import TodayTaskList from '../../components/TodayTaskList';
 import Dialog from '../../components/Dialog';
-import Schedule from '../../containers/Schedule';
+import CreateSchedule from '../../containers/CreateSchedule';
+import { selectTodaySchedules } from '../../stores/selectors/schedule';
 
 interface Props {
   className?: string;
 }
 
-function TodayTask({ className }: Props) {
-
+function TodaySchedules({ className }: Props) {
   const [show, setShow] = useState(false);
-  const handleClick = () => {
-    setShow(!show);
-  }
+  const toggleDialog = useCallback(() => {
+    setShow(prev => !prev);
+  }, []);
+
+  const schedules = useSelector(selectTodaySchedules);
 
   return (
     <Wrapper className={className}>
@@ -23,19 +26,19 @@ function TodayTask({ className }: Props) {
           <br />
           <strong>오늘 하루 계획 세울 준비 되셨나요?</strong>
         </Title>
-        <Button onClick={handleClick}>오늘 할일 추가하기</Button>
-        <Dialog show={show} handleClose={handleClick}>
-          <Schedule />
+        <Button onClick={toggleDialog}>오늘 할일 추가하기</Button>
+        <Dialog show={show} handleClose={toggleDialog}>
+          {show ? <CreateSchedule onClose={toggleDialog} /> : null}
         </Dialog>
       </Top>
       <Bottom>
-        <TodayTaskList />
+        <TodayTaskList schedules={schedules} />
       </Bottom>
     </Wrapper>
   );
 }
 
-export default memo(TodayTask);
+export default memo(TodaySchedules);
 
 const Wrapper = styled.div`
   display: flex;

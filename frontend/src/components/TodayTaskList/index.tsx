@@ -1,15 +1,18 @@
 import styled from '@emotion/styled';
 import React, { memo } from 'react';
+import { Schedule } from '../../models/schedule';
 import { HEAD_SIZE } from './sizes';
 import TodayTaskListItem from '../TodayTaskListItem';
+import emptyImage1x from './4-01.png';
+import emptyImage2x from './4-01@2x.png';
+import emptyImage3x from './4-01@3x.png';
 
 interface Props {
+  schedules: Schedule[];
   className?: string;
 }
 
-const isEmpty = false;
-
-function TodayTaskList({ className }: Props) {
+function TodayTaskList({ schedules, className }: Props) {
   return (
     <Wrapper className={className}>
       <Head>
@@ -19,29 +22,23 @@ function TodayTaskList({ className }: Props) {
         <HeadCell fixedWidth={68}>완료</HeadCell>
       </Head>
       <List>
-        {isEmpty ? (
+        {schedules.length === 0 ? (
           <Empty>
-            아직 오늘의 할일 리스트를
-            <br />
-            작성하지 않았습니다
-            <br />
-            상단의 ‘오늘 할일 만들기’를 클릭하여 작성하여 보세요
+            <EmptyImage
+              src={emptyImage2x}
+              srcSet={`${emptyImage1x} 1x, ${emptyImage2x} 2x, ${emptyImage3x} 3x`}
+              alt="오늘 할일을 추가하세요"
+            />
+            <EmptyText>
+              좋은 아침
+              <br />
+              오늘 하루 무엇을 할 지
+              <br />
+              <b>계획을 시작</b>할까요?
+            </EmptyText>
           </Empty>
         ) : (
-          <>
-            <TodayTaskListItem />
-            <TodayTaskListItem />
-            <TodayTaskListItem />
-            <TodayTaskListItem />
-            <TodayTaskListItem />
-            <TodayTaskListItem />
-            <TodayTaskListItem />
-            <TodayTaskListItem />
-            <TodayTaskListItem />
-            <TodayTaskListItem />
-            <TodayTaskListItem />
-            <TodayTaskListItem />
-          </>
+          schedules.map(schedule => <TodayTaskListItem key={schedule.taskId} schedule={schedule} />)
         )}
       </List>
     </Wrapper>
@@ -83,12 +80,18 @@ const Empty = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100% - ${HEAD_SIZE}px);
+  height: 100%;
+`;
 
-  font-size: 16px;
-  font-weight: bold;
-  letter-spacing: -0.74px;
-  text-align: center;
-  line-height: 1.5;
-  color: #c3c4c6;
+const EmptyImage = styled.img`
+  height: 200px;
+  margin-right: 40px;
+`;
+
+const EmptyText = styled.div`
+  font-size: 18px;
+  text-align: left;
+  line-height: normal;
+  letter-spacing: -1.14px;
+  color: #61676f;
 `;

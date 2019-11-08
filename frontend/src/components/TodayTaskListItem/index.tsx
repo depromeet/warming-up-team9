@@ -1,13 +1,21 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { memo, useMemo } from 'react';
+import { Schedule } from '../../models/schedule';
+import { parseToSpendTimeStr } from '../../utils/time';
 import playButton from './play-button.svg';
 // import pauseButton from './pause-button.svg';
 
-export default function TodayTaskListItem() {
+interface Props {
+  schedule: Schedule;
+}
+
+function TodayTaskListItem({ schedule }: Props) {
+  const spendTimeStr = useMemo(() => parseToSpendTimeStr(schedule.processTimeSec), [schedule.processTimeSec]);
+
   return (
     <Item>
       <Cell flex={1}>
-        <Text>디프만 자소서 완성하기</Text>
+        <Text>{schedule.title}</Text>
         <Blocks>
           <Block />
           <Block />
@@ -15,7 +23,7 @@ export default function TodayTaskListItem() {
         </Blocks>
       </Cell>
       <Cell fixedWidth={106}>
-        <Text>02 : 45 : 21</Text>
+        <Text>{spendTimeStr}</Text>
       </Cell>
       <Cell fixedWidth={78}>
         <IconButton aria-label="시작">
@@ -26,6 +34,8 @@ export default function TodayTaskListItem() {
     </Item>
   );
 }
+
+export default memo(TodayTaskListItem);
 
 const Item = styled.div`
   display: flex;

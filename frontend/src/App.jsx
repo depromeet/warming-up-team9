@@ -89,4 +89,3 @@ const Content = styled.main`
   width: 100%;
   height: calc(100% - ${HEADER_SIZE}px);
 `;
-

@@ -1,26 +1,33 @@
 import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadAllTasksAction, loadAllTasksFailAction, loadAllTasksSuccessAction, addNewTaskAction } from '../../stores/actions';
+import {
+  loadAllTasksAction,
+  loadAllTasksFailAction,
+  loadAllTasksSuccessAction,
+  addNewTaskAction,
+} from '../../stores/actions';
 import { selectAllTasks, selectAuthToken, selectIsAllTasksLoaded } from '../../stores/selectors';
 import { createNewTask, fetchAllTasks } from '../../remotes/api';
-import Dropdown from '../../components/Dropdown'
+import Dropdown from '../../components/Dropdown';
 
-function TaskForm( { fetchInput }) {
-
+function TaskForm({ fetchInput }) {
   const dispatch = useDispatch();
 
   const authToken = useSelector(selectAuthToken);
   const isAllTasksLoaded = useSelector(selectIsAllTasksLoaded);
   const allTasks = useSelector(selectAllTasks);
 
-  const postNewTask = useCallback(async (newTask) => {
-    try {
-      await createNewTask(authToken, newTask);
-      dispatch(addNewTaskAction(newTask));
-    } catch (error) {
-      dispatch(loadAllTasksFailAction(error));
-    }
-  }, [dispatch, authToken]);
+  const postNewTask = useCallback(
+    async newTaskTitle => {
+      try {
+        const newTask = await createNewTask(authToken, newTaskTitle);
+        dispatch(addNewTaskAction(newTask));
+      } catch (error) {
+        dispatch(loadAllTasksFailAction(error));
+      }
+    },
+    [dispatch, authToken]
+  );
 
   useEffect(() => {
     if (isAllTasksLoaded) {
@@ -38,13 +45,7 @@ function TaskForm( { fetchInput }) {
       });
   }, [dispatch, authToken, isAllTasksLoaded]);
 
-  return (
-    <Dropdown 
-      allTasks={allTasks}
-      addTask={(newTask) => postNewTask(newTask)}
-      fetchInput={fetchInput}
-    />
-  )
+  return <Dropdown allTasks={allTasks} addTask={newTask => postNewTask(newTask)} fetchInput={fetchInput} />;
 }
 
 export default React.memo(TaskForm);
