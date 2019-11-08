@@ -2,7 +2,7 @@ import { addDays, differenceInDays, format, lastDayOfMonth, startOfMonth } from 
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { EMPTY } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { API_ROOT } from '../../remotes/api';
 import { CALENDAR_ACTIONS, updateSchedulesAction } from '../actions/calendar';
 import { CalendarDaySchedule, CalendarState } from '../reducers/calendar';
@@ -10,6 +10,7 @@ import { CalendarDaySchedule, CalendarState } from '../reducers/calendar';
 const calendarSchedulesEpic: Epic = (action$, state$) =>
   action$.pipe(
     ofType(CALENDAR_ACTIONS.navigateToNextMonth, CALENDAR_ACTIONS.navigateToPrevMonth),
+    startWith(null),
     switchMap(() => {
       const state = state$.value;
       const { authToken } = state.common;
@@ -31,6 +32,8 @@ const calendarSchedulesEpic: Epic = (action$, state$) =>
             let index = startDate;
             const totalDays = differenceInDays(endDate, startDate);
             const parsed: CalendarDaySchedule = {};
+
+            console.log(schedules);
 
             for (let i = 0; i < totalDays; i += 1) {
               const yyyyMMdd = format(index, 'yyyyMMdd');

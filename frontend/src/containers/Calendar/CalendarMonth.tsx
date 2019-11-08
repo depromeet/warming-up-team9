@@ -56,8 +56,8 @@ function CalendarMonth({ month, schedules, onNavigateToPrev, onNavigateToNext, f
                     isEmptyCell={isOutsideDay}
                     tabIndex={isFocusedDay ? 0 : -1}
                     isSelected={isFocusedDay}
-                    showCarrot={schedules[yyyyMMdd].hasReview}
-                    showDot={schedules[yyyyMMdd].hasSchedule}
+                    showCarrot={schedules[yyyyMMdd] ? schedules[yyyyMMdd].hasReview : false}
+                    showDot={schedules[yyyyMMdd] ? schedules[yyyyMMdd].hasSchedule : false}
                   />
                 );
               })}
