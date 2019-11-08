@@ -1,7 +1,7 @@
 import * as axios from 'axios';
 import { userInfo } from 'os';
 
-export const API_ROOT = 'http://api-jjayo.depromeet.com';
+export const API_ROOT = 'https://jjayo.hinco.dev';
 
 export async function fetchUser(authToken) {
   const { data } = await axios.get(`${API_ROOT}/users/me`, {
