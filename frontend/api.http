@@ -1,0 +1,42 @@
+POST http://api-jjayo.depromeet.com/users
+Content-Type: application/json
+
+{
+  "email": "seokju.me@gmail.com",
+  "password": "qwe09123",
+  "nickname": "석주다"
+}
+
+###
+
+# Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZGMxODgxNDMwODQxZTIwNjUwYzYyNDYiLCJlbWFpbCI6InNlb2tqdS5tZUBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyEneyjvOuLpCIsImlhdCI6MTU3Mjk2NDM3MiwiZXhwIjoxNTc1NTU2MzcyfQ.Kqqxchzzj6DJMXcQCEYJNnaxWt0JdL0PbmYDXl9j2Nk
+
+GET http://api-jjayo.depromeet.com/users/me
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZGMxODgxNDMwODQxZTIwNjUwYzYyNDYiLCJlbWFpbCI6InNlb2tqdS5tZUBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyEneyjvOuLpCIsImlhdCI6MTU3Mjk2NDM3MiwiZXhwIjoxNTc1NTU2MzcyfQ.Kqqxchzzj6DJMXcQCEYJNnaxWt0JdL0PbmYDXl9j2Nk
+
+###
+
+POST http://api-jjayo.depromeet.com/auth/login
+Content-Type: application/json
+
+{
+  "email": "seokju.me@gmail.com",
+  "password": "qwe09123"
+}
+
+###
+
+GET http://api-jjayo.depromeet.com/users/me/tasks
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZGMxODgxNDMwODQxZTIwNjUwYzYyNDYiLCJlbWFpbCI6InNlb2tqdS5tZUBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyEneyjvOuLpCIsImlhdCI6MTU3Mjk2NDM3MiwiZXhwIjoxNTc1NTU2MzcyfQ.Kqqxchzzj6DJMXcQCEYJNnaxWt0JdL0PbmYDXl9j2Nk
+
+###
+
+POST http://api-jjayo.depromeet.com/users/me/tasks
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZGMxODgxNDMwODQxZTIwNjUwYzYyNDYiLCJlbWFpbCI6InNlb2tqdS5tZUBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyEneyjvOuLpCIsImlhdCI6MTU3Mjk2NDM3MiwiZXhwIjoxNTc1NTU2MzcyfQ.Kqqxchzzj6DJMXcQCEYJNnaxWt0JdL0PbmYDXl9j2Nk
+Content-Type: application/json
+
+{
+  "title": "123"
+}
+
+###

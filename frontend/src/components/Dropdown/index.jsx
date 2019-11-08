@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React, { useState, useCallback } from 'react';
 import DropdownItem from '../DropdownItem'
 
-function Dropdown( {allTasks, addTask} ) {
+function Dropdown( {allTasks, addTask, fetchInput} ) {
   
   const [selectedTaskIndex, setSelectedTaskIndex] = useState(-1);
   const [filteredTasks, setFilteredTasks] = useState([]);
@@ -23,6 +23,10 @@ function Dropdown( {allTasks, addTask} ) {
       setSelectedTaskIndex(-1);
       setShowTasks(true);
       setUserInput(e.target.value);
+      
+      if (typeof fetchInput === 'function') {
+        fetchInput(e.target.value);
+      }
     },
     [allTasks, setFilteredTasks, setShowTasks, userInput]
   );
@@ -77,9 +81,8 @@ function Dropdown( {allTasks, addTask} ) {
         />
         <Button onClick={addNewTask}>추가하기</Button>
       </Top>
-      <br />
       {(showTasks && userInput && filteredTasks.length) ? (
-        <UnorderedList>
+        <UnorderedList show={showTasks}>
           {filteredTasks.map(task => (
             <DropdownItem 
               key={task.taskId} 
@@ -98,8 +101,9 @@ export default React.memo(Dropdown);
 
 const Wrapper = styled.div`
   width: 584px;
-  height: 340px;
+  height: 100%;
   box-sizing: border-box;
+  padding: 0;
   margin: auto;
 `;
 
@@ -142,9 +146,14 @@ const Button = styled.button`
 `;
 
 const UnorderedList = styled.ul`
+  display: ${props => props.show ? 'block' : 'none'};
   width: 584px;
-  height: 287px;
+  max-height: 200px;
+  margin-top: 10px;
+  background-color: white;
   list-style-type: none;
+  position: absolute;
+  z-index: 1;
   overflow-y: auto;
   overflow-x: hidden;
   ::-webkit-scrollbar {

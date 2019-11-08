@@ -16,15 +16,13 @@ import closeIcon from './closeIcon.svg'
     </Dialog>
 */
 
-export default function Dialog( { show, handleClose, children } ) {
+export default function Dialog({ show, handleClose, children }) {
   return (
     <Wrapper role="dialog" show={show}>
       <Modal>
-        <Top>
-          <CloseButton aria-label="창 닫기" onClick={handleClose}>
-            <img src={closeIcon} alt="" aria-hidden={true}/>
-          </CloseButton>
-        </Top>
+        <CloseButton aria-label="창 닫기" onClick={handleClose}>
+          <img src={closeIcon} alt="" aria-hidden={true} />
+        </CloseButton>
         {children}
       </Modal>
     </Wrapper>
@@ -32,40 +30,34 @@ export default function Dialog( { show, handleClose, children } ) {
 }
 
 const Wrapper = styled.div`
-  display: ${props => props.show ? 'block' : 'none'};
+  display: ${props => props.show ? 'flex' : 'none'};
+  align-items: ${props => props.show ? 'center' : 'none'};
   position: fixed;
   z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  padding-top: 72px;
   overflow: auto;
   background-color: rgba(97, 103, 111, 0.6);
 `;
 
 const Modal = styled.div`
   width: 784px;
-  height: 700px;
+  max-height: 716px;
+  height: 90%;
   box-sizing: border-box;
+  padding: 26px;
   margin: auto;
-  border: 1px solid red;
   border-radius: 10px;
   background-color: #ffffff;
-`;
-
-const Top = styled.div`
-  width: 100%;
-  height: 44px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row-reverse;
-  padding: 26px 26px 26px 4px;
 `;
 
 const CloseButton = styled.button`
   height: 18px;
   padding: 0;
+  position: relative;
+  left: 714px;
   background-color: transparent;
   border: none;
   outline: none;
