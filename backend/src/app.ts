@@ -10,7 +10,13 @@ const PORT = 3000;
 
 const app = express();
 
-app.use(logger("dev"));
+app.use(
+    logger("dev", {
+        skip: (req, res) => {
+            return req.path === "/health-check";
+        },
+    }),
+);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

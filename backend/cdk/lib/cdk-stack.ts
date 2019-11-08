@@ -47,6 +47,9 @@ export class Jjayo extends cdk.Stack {
             protocol: ApplicationProtocol.HTTP,
             port: 3000,
             targets: [asg],
+            healthCheck: {
+                path: "/health-check",
+            },
         });
         listener.connections.allowDefaultPortFromAnyIpv4("Open to the world");
     }
