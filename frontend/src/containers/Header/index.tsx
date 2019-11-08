@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
+import { AUTH_TOKEN_STORAGE_KEY } from '../../constants';
 import { User } from '../../models';
+import { generateStorage } from '../../utils';
 import { HEADER_SIZE } from './sizes';
 import logo from './logo.png';
 import logo2x from './logo@2x.png';
@@ -11,12 +13,15 @@ interface Props {
   user: User | null;
 }
 
+const storage = generateStorage();
+
 export default function Header({ user }: Props) {
   const history = useHistory();
 
   const handleClick = useCallback(() => {
     if (user) {
-      // TODO(@seokju-na): 로그아웃
+      storage.remove(AUTH_TOKEN_STORAGE_KEY);
+      window.location.reload();
     } else {
       history.push('/login');
     }
@@ -68,4 +73,5 @@ const Button = styled.button`
   letter-spacing: -0.56px;
   text-align: center;
   color: #61676f;
+  cursor: pointer;
 `;

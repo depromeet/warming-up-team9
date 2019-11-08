@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import TodayTaskList from '../../components/TodayTaskList';
 import Dialog from '../../components/Dialog';
 import CreateSchedule from '../../containers/CreateSchedule';
+import { selectUser } from '../../stores/selectors';
 import { selectTodaySchedules } from '../../stores/selectors/schedule';
 
 interface Props {
@@ -16,13 +17,14 @@ function TodaySchedules({ className }: Props) {
     setShow(prev => !prev);
   }, []);
 
+  const user = useSelector(selectUser);
   const schedules = useSelector(selectTodaySchedules);
 
   return (
     <Wrapper className={className}>
       <Top>
         <Title>
-          안녕하세요 디프마니님!
+          안녕하세요 {user!.nickname}님!
           <br />
           <strong>오늘 하루 계획 세울 준비 되셨나요?</strong>
         </Title>
