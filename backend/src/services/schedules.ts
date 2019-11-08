@@ -74,7 +74,6 @@ export const getSchedules = async (arg: { owner: string; startDate: Moment; endD
             hasReview: specificDateSchedules.filter(schedule => schedule.review).length > 0,
         });
     }
-    console.log(resultArray.length);
 
     return resultArray;
 };
