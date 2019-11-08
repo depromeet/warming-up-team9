@@ -10,10 +10,23 @@ export default function Schedule() {
   const { date } = useTodayTimer();
   const todayDate = date.substr(0, 7);
 
+  const MAXTIME = 13;
+
   const [inputTask, setInputTask] = useState('');
+  const [blockTime, setBlockTime] = useState(0);
 
   const fetchInput = (inputValue) => {
     setInputTask(inputValue);
+  }
+
+  const increaseTimeBlock = () => {
+    const next = (blockTime + 1 + MAXTIME) % MAXTIME;
+    setBlockTime(next);
+  }
+
+  const decreaseTimeBlock = () => {
+    const prev = (blockTime - 1 + MAXTIME) % MAXTIME;
+    setBlockTime(prev);
   }
 
   return (
@@ -60,11 +73,11 @@ export default function Schedule() {
       <SelectTimeBlock>
         <SmallHead>Block(시간) 배분하기</SmallHead>
         <SetTime>
-          <InputTime type="text" value={0}/>
-          <ChangeTimeButton aria-label="한 시간 추가">
+          <InputTime type="text" value={blockTime}/>
+          <ChangeTimeButton aria-label="한 시간 추가" onClick={increaseTimeBlock}>
             <img src={increaseIcon} alt="" aria-hidden={true} />
           </ChangeTimeButton>
-          <ChangeTimeButton aria-label="한 시간 삭감">
+          <ChangeTimeButton aria-label="한 시간 삭감" onClick={decreaseTimeBlock}>
             <img src={decreaseIcon} alt="" aria-hidden={true} />
           </ChangeTimeButton>
           <TimeDescription>시간이 걸릴것 같아요</TimeDescription>
@@ -77,8 +90,9 @@ export default function Schedule() {
 
 const Wrapper = styled.div`
   width: 584px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-column: (5, 1fr);
+  grid-gap: 12px;
   justify-content: center;
   box-sizing: border-box;
   margin: auto;
@@ -103,7 +117,7 @@ const Date = styled.span`
 
 const Title = styled.h1`
   height: 68px;
-  padding-bottom: 44px;
+  padding-bottom: 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -171,8 +185,6 @@ const Block = styled.div`
 
 const Hr = styled.hr`
   border-top: solid 2px #f4f9ff;
-  margin-top: 29px;
-  margin-bottom: 18px;
 `;
 
 const SmallHead = styled.h3`
@@ -187,7 +199,7 @@ const TaskSelect = styled.div`
 `;
 
 const SelectTimeBlock = styled.div`
-  margin-bottom: 59px;
+
 `;
 
 const SetTime = styled.div`

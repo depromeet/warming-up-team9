@@ -1,12 +1,20 @@
 import styled from '@emotion/styled';
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import TodayTaskList from '../../components/TodayTaskList';
+import Dialog from '../../components/Dialog';
+import Schedule from '../../containers/Schedule';
 
 interface Props {
   className?: string;
 }
 
 function TodayTask({ className }: Props) {
+
+  const [show, setShow] = useState(false);
+  const handleClick = () => {
+    setShow(!show);
+  }
+
   return (
     <Wrapper className={className}>
       <Top>
@@ -15,7 +23,10 @@ function TodayTask({ className }: Props) {
           <br />
           <strong>오늘 하루 계획 세울 준비 되셨나요?</strong>
         </Title>
-        <Button>오늘 할일 추가하기</Button>
+        <Button onClick={handleClick}>오늘 할일 추가하기</Button>
+        <Dialog show={show} handleClose={handleClick}>
+          <Schedule />
+        </Dialog>
       </Top>
       <Bottom>
         <TodayTaskList />

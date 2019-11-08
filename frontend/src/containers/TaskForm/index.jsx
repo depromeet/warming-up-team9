@@ -40,15 +40,7 @@ function TaskForm( { fetchInput }) {
 
   return (
     <Dropdown 
-      allTasks={[
-        {title: "디프만 지원서 작성하기", titleId: 1},
-        {title: "디프만 지원서 작성하기", titleId: 1},
-        {title: "디프만 지원서 작성하기", titleId: 1},
-        {title: "디프만 지원서 작성하기", titleId: 1},
-        {title: "디프만 지원서 작성하기", titleId: 1},
-        {title: "디프만 지원서 작성하기", titleId: 1},
-        {title: "디프만 지원서 작성하기", titleId: 1},
-      ]}
+      allTasks={allTasks}
       addTask={(newTask) => postNewTask(newTask)}
       fetchInput={fetchInput}
     />

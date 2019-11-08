@@ -17,7 +17,7 @@ function CreateTask( {onButtonClick} ) {
         <Illustration role="img">
           <img src={illustration3x} srcSet={`${illustration} 1x, ${illustration2x} 2x, ${illustration3x} 3x`} alt="" aria-hidden={true} />
         </Illustration>
-        환영합니다, 님!
+        환영합니다, {user.nickname}님!
         <br />
         <strong>해야 할 일을 추가해볼까요?</strong>
       </Title>
