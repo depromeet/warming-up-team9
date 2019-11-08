@@ -3,6 +3,7 @@ import { normalizeCalendarDay } from './normalizeCalendarDay';
 import { cloneDate } from './cloneDate';
 
 export interface WeekDay {
+  yyyyMMdd: string;
   day: Date;
   isOutsideDay: boolean;
 }
@@ -40,6 +41,7 @@ export function getCalendarMonthWeeks(month: Date): WeekDay[][] {
     }
 
     weeks[weeks.length - 1].push({
+      yyyyMMdd: format(currentDay, 'yyyyMMdd'),
       day: cloneDate(currentDay),
       isOutsideDay: !isSameMonth(month, currentDay),
     });

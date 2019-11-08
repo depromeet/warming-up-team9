@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { format, isSameDay } from 'date-fns';
 import React, { memo, useCallback, useMemo } from 'react';
+import { CalendarDaySchedule } from '../../stores/reducers/calendar';
 import { getCalendarMonthWeeks } from '../../utils';
 import arrowLeft from './arrow-left.svg';
 import arrowRight from './arrow-right.svg';
@@ -11,13 +12,14 @@ import { NAVIGATOR_SIZE } from './sizes';
 
 interface Props {
   month: Date;
+  schedules: CalendarDaySchedule;
   onNavigateToPrev?: () => void;
   onNavigateToNext?: () => void;
   focusedDay?: Date;
   className?: string;
 }
 
-function CalendarMonth({ month, onNavigateToPrev, onNavigateToNext, focusedDay, className }: Props) {
+function CalendarMonth({ month, schedules, onNavigateToPrev, onNavigateToNext, focusedDay, className }: Props) {
   const weeks = useMemo(() => getCalendarMonthWeeks(month), [month]);
   const monthTitle = useMemo(() => format(month, 'MMMM'), [month]);
 
@@ -44,7 +46,7 @@ function CalendarMonth({ month, onNavigateToPrev, onNavigateToNext, focusedDay, 
         <tbody>
           {weeks.map((week, i) => (
             <CalendarWeek key={i}>
-              {week.map(({ day, isOutsideDay }, dayOfWeek) => {
+              {week.map(({ yyyyMMdd, day, isOutsideDay }, dayOfWeek) => {
                 const isFocusedDay = getIfFocusedDay(day);
 
                 return (
@@ -54,6 +56,8 @@ function CalendarMonth({ month, onNavigateToPrev, onNavigateToNext, focusedDay, 
                     isEmptyCell={isOutsideDay}
                     tabIndex={isFocusedDay ? 0 : -1}
                     isSelected={isFocusedDay}
+                    showCarrot={schedules[yyyyMMdd].hasReview}
+                    showDot={schedules[yyyyMMdd].hasSchedule}
                   />
                 );
               })}
