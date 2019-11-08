@@ -6,8 +6,15 @@ import decreaseIcon from './decreaseIcon.svg'
 import increaseIcon from './increaseIcon.svg'
 
 export default function Schedule() {
+
   const { date } = useTodayTimer();
   const todayDate = date.substr(0, 7);
+
+  const [inputTask, setInputTask] = useState('');
+
+  const fetchInput = (inputValue) => {
+    setInputTask(inputValue);
+  }
 
   return (
     <Wrapper>
@@ -47,7 +54,7 @@ export default function Schedule() {
       <Hr />
       <TaskSelect>
         <SmallHead>Task</SmallHead>
-        <TaskForm />
+        <TaskForm fetchInput={fetchInput}/>
       </TaskSelect>
       {/* TODO: 블록 개수 배분하기 */}
       <SelectTimeBlock>

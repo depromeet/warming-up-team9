@@ -5,7 +5,7 @@ import { selectAllTasks, selectAuthToken, selectIsAllTasksLoaded } from '../../s
 import { createNewTask, fetchAllTasks } from '../../remotes/api';
 import Dropdown from '../../components/Dropdown'
 
-function TaskForm() {
+function TaskForm( { fetchInput }) {
 
   const dispatch = useDispatch();
 
@@ -42,6 +42,7 @@ function TaskForm() {
     <Dropdown 
       allTasks={allTasks}
       addTask={(newTask) => postNewTask(newTask)}
+      fetchInput={fetchInput}
     />
   )
 }

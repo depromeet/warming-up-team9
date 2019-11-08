@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React, { useState, useCallback } from 'react';
 import DropdownItem from '../DropdownItem'
 
-function Dropdown( {allTasks, addTask} ) {
+function Dropdown( {allTasks, addTask, fetchInput} ) {
   
   const [selectedTaskIndex, setSelectedTaskIndex] = useState(-1);
   const [filteredTasks, setFilteredTasks] = useState([]);
@@ -23,6 +23,10 @@ function Dropdown( {allTasks, addTask} ) {
       setSelectedTaskIndex(-1);
       setShowTasks(true);
       setUserInput(e.target.value);
+      
+      if (typeof fetchInput === 'function') {
+        fetchInput(e.target.value);
+      }
     },
     [allTasks, setFilteredTasks, setShowTasks, userInput]
   );
