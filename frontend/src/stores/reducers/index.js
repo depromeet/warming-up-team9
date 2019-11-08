@@ -8,6 +8,7 @@ import { scheduleReducer } from './schedule';
 export const rootReducer = combineReducers({
   common: commonReducer,
   tasks: tasksReducer,
+
   auth: authReducer,
   calendar: calendarReducer,
   schedule: scheduleReducer,
