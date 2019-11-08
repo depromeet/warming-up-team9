@@ -13,7 +13,9 @@ export type Schedules = {
     estimatedHour: number;
     playedTimeSec: number;
     scheduleDate: Date;
+    review: string;
     createdAt: Date;
+    state: string;
 };
 
 export type ScheduleDocument = mongoose.Document & Schedules;

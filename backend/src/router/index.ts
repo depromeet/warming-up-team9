@@ -20,7 +20,10 @@ const router = (router: express.Router) => {
         .put([verifyTokenMiddleware, tasks.editTask])
         .delete([verifyTokenMiddleware, tasks.deleteTask]);
     router.route("/users/me/tasks/:taskId/done").post([verifyTokenMiddleware, tasks.completeTask]);
-    router.route("/users/me/schedules").post([verifyTokenMiddleware, schedules.addSchedule]);
+    router
+        .route("/users/me/schedules")
+        .post([verifyTokenMiddleware, schedules.addSchedule])
+        .get([verifyTokenMiddleware, schedules.getSchedules]);
     router.route("/users/me/schedules/:targetDate").get([verifyTokenMiddleware, schedules.getSchedule]);
 
     return router;

@@ -2,6 +2,7 @@ import { db } from "../models";
 import { ScheduleDocument } from "../models/schedules";
 import { TasksDocument, TaskStates } from "../models/tasks";
 import createHttpError = require("http-errors");
+import { Moment } from "moment";
 
 const HOUR_LIMIT_PER_DAY = 12;
 
@@ -52,4 +53,28 @@ export const getSchedule = async (arg: { owner: string; date: Date }) => {
             };
         }
     });
+};
+
+export const getSchedules = async (arg: { owner: string; startDate: Moment; endDate: Moment }) => {
+    const { owner, startDate, endDate } = arg;
+    const schedules = (await db.Schedules.find({
+        owner,
+        scheduleDate: { $gte: startDate.toDate(), $lt: endDate.toDate() },
+    })) as ScheduleDocument[];
+
+    const days = endDate.diff(startDate, "day");
+    const resultArray = [];
+    for (let i = 0; i < days; i++) {
+        const date = startDate.clone().add(i, "day");
+        const specificDateSchedules = schedules.filter(
+            schedule => schedule.scheduleDate.valueOf() === date.toDate().valueOf(),
+        );
+        resultArray.push({
+            hasSchedule: specificDateSchedules.length > 0,
+            hasReview: specificDateSchedules.filter(schedule => schedule.review).length > 0,
+        });
+    }
+    console.log(resultArray.length);
+
+    return resultArray;
 };
