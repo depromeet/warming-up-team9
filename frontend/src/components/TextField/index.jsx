@@ -20,7 +20,7 @@ const TextField = ({ label, value, error, ...rest }) => {
           </Fragment>
       }
     </div>
-  )
+  );
 }
 
 export default TextField;
