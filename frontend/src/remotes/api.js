@@ -44,3 +44,8 @@ export async function addSchedule(authToken, data) {
     },
   });
 }
+
+export async function login(email, password) {
+  const { data } = await axios.post(`${API_ROOT}/auth/login`, { email, password });
+  return data.token;
+}
