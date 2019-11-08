@@ -33,6 +33,7 @@ function CalendarDay({
   tabIndex = -1,
   onDayClick,
 }: Props) {
+
   const content = useMemo(() => format(day, 'd'), [day]);
   const handleClick = useCallback(
     (event: MouseEvent) => {

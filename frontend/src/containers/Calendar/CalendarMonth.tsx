@@ -17,9 +17,10 @@ interface Props {
   onNavigateToNext?: () => void;
   focusedDay?: Date;
   className?: string;
+  dayClick?: () => void;
 }
 
-function CalendarMonth({ month, schedules, onNavigateToPrev, onNavigateToNext, focusedDay, className }: Props) {
+function CalendarMonth({ month, schedules, onNavigateToPrev, onNavigateToNext, dayClick, focusedDay, className }: Props) {
   const weeks = useMemo(() => getCalendarMonthWeeks(month), [month]);
   const monthTitle = useMemo(() => format(month, 'MMMM'), [month]);
 
@@ -57,7 +58,8 @@ function CalendarMonth({ month, schedules, onNavigateToPrev, onNavigateToNext, f
                     tabIndex={isFocusedDay ? 0 : -1}
                     isSelected={isFocusedDay}
                     showCarrot={schedules[yyyyMMdd] ? schedules[yyyyMMdd].hasReview : false}
-                    showDot={schedules[yyyyMMdd] ? schedules[yyyyMMdd].hasSchedule : false}
+                    showDot={isFocusedDay}
+                    onDayClick={dayClick}
                   />
                 );
               })}
