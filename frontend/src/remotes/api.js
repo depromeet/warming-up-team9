@@ -1,4 +1,5 @@
 import * as axios from 'axios';
+import { userInfo } from 'os';
 
 export const API_ROOT = 'http://api-jjayo.depromeet.com';
 
