@@ -8,7 +8,7 @@ import styles from './LoginForm.module.scss';
 
 const cx = classnames.bind(styles);
 
-const LoginForm = ({ 
+const LoginForm = ({
   login,
   history
 }) => {
@@ -17,7 +17,7 @@ const LoginForm = ({
   const [password, setPassword] = useState('');
 
   const onFormSubmit = () => {
-    try{
+    try {
       login({ email, password });
       history.push('/');
     } catch (e) {
@@ -27,36 +27,36 @@ const LoginForm = ({
     }
   }
 
-  return( 
+  return (
     <div className={cx('login-box')}>
-      <div className={cx('carrot')}><img src={carrot} alt="carrot"/></div>
+      <div className={cx('carrot')}><img src={carrot} alt="carrot" /></div>
       <div className={cx('form-contents')}>
         <TextField
           type="email"
           name="email"
           value={email}
           label="이메일"
-          onChange={({target: {value}}) => setEmail(value)}
+          onChange={({ target: { value } }) => setEmail(value)}
         />
         <TextField
           type="password"
           name="password"
           value={password}
           label="비밀번호"
-          onChange={({target: {value}}) => setPassword(value)}
+          onChange={({ target: { value } }) => setPassword(value)}
         />
       </div>
-      <div className={cx('sign-btn', 'first-btn')} onClick={onFormSubmit}> 
-        <SignButton 
-          label = "로그인"
+      <div className={cx('sign-btn', 'first-btn')} onClick={onFormSubmit}>
+        <SignButton
+          label="로그인"
         />
       </div>
       <div className={cx('sign-btn')}>
         <Link to='/signup'>
           <SignButton
-            label = "회원가입"
-            col = "#0b79ff"
-            backCol = "#e2edff"
+            label="회원가입"
+            col="#0b79ff"
+            backCol="#e2edff"
           />
         </Link>
       </div>

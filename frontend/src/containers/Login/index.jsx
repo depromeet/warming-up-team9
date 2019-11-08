@@ -6,8 +6,8 @@ const Login = () => {
   return (
     <Fragment>
       <LoginFormContainer />
-      <Hero 
-        back = { true }
+      <Hero
+        back={true}
       />
     </Fragment>
   );
