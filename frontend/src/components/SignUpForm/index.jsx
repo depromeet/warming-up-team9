@@ -13,7 +13,7 @@ const SignUpForm = ({
   email,
   password,
   checkpassword,
-  checkagree,
+  checked,
   nickname,
   validation,
   // errorCode
@@ -22,7 +22,6 @@ const SignUpForm = ({
   // const errorCodeMsg = {
   //   1 : '이미 존재하는 메일입니다.'
   // }
-
   return (
     <div className={cx('sign-box')}>
       <p>회원가입</p>
@@ -68,12 +67,9 @@ const SignUpForm = ({
           error={validation.checkpassword.message}
         />
         <Checkbox
-          type="checkbox"
-          name="checkagree"
-          value={checkagree}
-          label="회원가입 조항에 동의하십니까?"
+          name="checked"
           onChange={onChange}
-          error={validation.checkagree.message}
+          value={checked}
         />
       </div>
       <div className={cx('sign-btn')} onClick={onFormSubmit}>

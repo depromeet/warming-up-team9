@@ -7,7 +7,7 @@ const SignUp = () => {
     <Fragment>
       <SignUpFormContainer />
       <Hero
-        back = { false }
+        back={false}
       />
     </Fragment>
   );
