@@ -9,17 +9,17 @@ export function createInitialCommonState() {
   return {
     authToken: storage.get(AUTH_TOKEN_STORAGE_KEY),
     user: null,
-    loginStatus: 'INIT', 
+    loginStatus: 'INIT',
     isLoggingIn: false, // 로그인 시도중
     logInErrorRes: '', // 로그인 에러
-    signUpStatus: 'INIT', 
+    signUpStatus: 'INIT',
     isSignedUp: false, // 회원가입 성공
     isSigningUp: false, // 회원가입 시도중
     signUpErrorRes: '' // 회원가입 에러
   };
 }
 
-export function authReducer(state = createInitialCommonState(), action){
+export function authReducer(state = createInitialCommonState(), action) {
   return produce(state, draft => {
     switch (action.type) {
       case authActions.AUTH_LOGIN: {

@@ -27,25 +27,40 @@ export function loginSuccess(email) {
 
 export function loginFailure() {
   return {
-    type: AUTH_LOGIN_FAILURE, 
+    type: AUTH_LOGIN_FAILURE,
     // error
   };
 }
 
-// export async function loginUser(values) {
-//   return (dispatch) => {
-//     // 서버에서 따로 응답을 받지 않았다면 정상 작동
-//     dispatch(login());
-//     // dispatch를 통해 받아온 값을 서버에 보냄
-//     const { data } = await axios.post(`${API}/auth/login`, values);
-//     // 서버에서 받아온 값이 SUCCESS, FAIL 인지 체크
-//     try {
-//       dispatch(loginSuccess());
-//     } catch (err) {
-//       dispatch(loginFailure());
-//     }
-//   }
-// }
+export async function loginUserAPI(values) {
+  try {
+    const res = await axios.post(`${API}/auth/login`, values, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      }
+    })
+    console.log(res);
+    return res;
+  } catch (err) {
+    console.log(err.message, err.code);
+  }
+}
+
+export function loginUser(values) {
+  return async dispatch => {
+    // 서버에서 따로 응답을 받지 않았다면 정상 작동
+    dispatch(login());
+    // dispatch를 통해 받아온 값을 서버에 보냄
+    const data = await loginUserAPI(values);
+    dispatch(registerSuccess(data));
+    try {
+      dispatch(loginSuccess());
+    } catch (err) {
+      dispatch(loginFailure());
+    }
+  }
+}
 
 
 export const register = () => {
@@ -69,16 +84,16 @@ export const registerFailure = (error) => {
 }
 
 export async function registerUserAPI(values) {
-  try{
-  const res = await axios.post(`${API}/users`, values, {
-    headers: {
-      'Access-Control-Allow-Origin' : '*',
-      'Content-Type': 'application/json'
-    }
-  })
-  console.log(res);
-  return res;
-  } catch(err) {
+  try {
+    const res = await axios.post(`${API}/users`, values, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      }
+    })
+    console.log(res);
+    return res;
+  } catch (err) {
     console.log(err.message, err.code);
   }
 }
@@ -86,14 +101,13 @@ export async function registerUserAPI(values) {
 export function registerUser(values) {
   return async dispatch => {
     dispatch(register());
-    try{
+    try {
       console.log('성공');
       const data = await registerUserAPI(values);
       dispatch(registerSuccess(data));
     } catch (err) {
-        console.log('이미 존재하는 이메일');
-        dispatch(registerFailure(err));
+      console.log('이미 존재하는 이메일');
+      dispatch(registerFailure(err));
     }
   }
 }
-
