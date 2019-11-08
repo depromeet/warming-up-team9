@@ -85,7 +85,7 @@ const Day = styled.td<{
 
   border: none;
   margin: 0;
-  padding: 2px;
+  padding: 6px 2px;
 
   user-select: none;
 
@@ -121,5 +121,5 @@ const CarrotImage = styled.img`
   position: absolute;
   display: inline-block;
   right: 4px;
-  top: 3px;
+  top: 7px;
 `;
