@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import TaskForm from '../TaskForm'
 import { useTodayTimer } from '../../hooks';
+import { MAX_TIME } from './timeLimits';
 import decreaseIcon from './decreaseIcon.svg'
 import increaseIcon from './increaseIcon.svg'
 
@@ -9,8 +10,6 @@ export default function Schedule() {
 
   const { date } = useTodayTimer();
   const todayDate = date.substr(0, 7);
-
-  const MAXTIME = 13;
 
   const [inputTask, setInputTask] = useState('');
   const [blockTime, setBlockTime] = useState(0);
@@ -20,12 +19,12 @@ export default function Schedule() {
   }
 
   const increaseTimeBlock = () => {
-    const next = (blockTime + 1 + MAXTIME) % MAXTIME;
+    const next = (blockTime + 1 + MAX_TIME) % MAX_TIME;
     setBlockTime(next);
   }
 
   const decreaseTimeBlock = () => {
-    const prev = (blockTime - 1 + MAXTIME) % MAXTIME;
+    const prev = (blockTime - 1 + MAX_TIME) % MAX_TIME;
     setBlockTime(prev);
   }
 
