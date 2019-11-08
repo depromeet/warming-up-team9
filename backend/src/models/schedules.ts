@@ -3,7 +3,7 @@ import { Tasks } from "./tasks";
 
 export enum ScheduleStates {
     "READY" = "READY",
-    "PENDING" = "PENDING",
+    "PROCESSING" = "PROCESSING",
     "DONE" = "DONE",
 }
 
@@ -30,7 +30,7 @@ const schema = new mongoose.Schema(
         review: { type: String },
         state: {
             type: String,
-            enum: [ScheduleStates.READY, ScheduleStates.DONE, ScheduleStates.PENDING],
+            enum: [ScheduleStates.READY, ScheduleStates.DONE, ScheduleStates.PROCESSING],
             default: ScheduleStates.READY,
         },
     },

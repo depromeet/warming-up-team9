@@ -1,8 +1,10 @@
 import { db } from "../models";
-import { ScheduleDocument } from "../models/schedules";
+import { ScheduleDocument, ScheduleStates } from "../models/schedules";
 import { TasksDocument, TaskStates } from "../models/tasks";
-import createHttpError = require("http-errors");
 import { Moment } from "moment";
+import { scheduleHistoryService } from "./index";
+import { ScheduleHistoryState } from "../models/scheduleHistories";
+import createHttpError = require("http-errors");
 
 const HOUR_LIMIT_PER_DAY = 12;
 
@@ -78,4 +80,61 @@ export const getSchedules = async (arg: { owner: string; startDate: Moment; endD
     }
 
     return resultArray;
+};
+
+export const handleScheduleHistory = async (args: {
+    owner: string;
+    scheduleId: string;
+    scheduleHistoryState: ScheduleHistoryState;
+}) => {
+    const { owner, scheduleId, scheduleHistoryState } = args;
+    const schedule = (await db.Schedules.findOne({
+        _id: scheduleId,
+    })) as ScheduleDocument;
+    if (!schedule) {
+        throw createHttpError(400, { code: 300, message: "존재하지 않는 스케쥴" });
+    }
+    if (schedule.owner.toString() !== owner) {
+        throw createHttpError(403);
+    }
+
+    switch (scheduleHistoryState) {
+        case ScheduleHistoryState.START: {
+            if (schedule.state !== ScheduleStates.READY) {
+                throw createHttpError(400, { code: 306, message: "시작 할 수 없는 상태" });
+            }
+            schedule.state = ScheduleStates.PROCESSING;
+            break;
+        }
+        case ScheduleHistoryState.DONE: {
+            if (schedule.state !== ScheduleStates.PROCESSING) {
+                throw createHttpError(400, { code: 307, message: "이미 시작한 스케줄" });
+            }
+            schedule.state = ScheduleStates.DONE;
+            break;
+        }
+        case ScheduleHistoryState.RESUME: {
+            if (schedule.state !== ScheduleStates.PROCESSING) {
+                throw createHttpError(400, { code: 308, message: "재시작 할 수 없는 상태" });
+            }
+            break;
+        }
+        case ScheduleHistoryState.STOP: {
+            if (schedule.state !== ScheduleStates.PROCESSING) {
+                throw createHttpError(400, { code: 309, message: "중지 할 수 없는 상태" });
+            }
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+
+    await scheduleHistoryService.addHistory({
+        owner,
+        scheduleId,
+        taskId: schedule.taskId.toString(),
+        state: scheduleHistoryState,
+    });
+    await schedule.save();
 };

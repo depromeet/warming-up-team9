@@ -55,3 +55,20 @@ export const getSchedules: RequestHandler = async (req, res, next) => {
         next(err);
     }
 };
+
+export const handleScheduleHistory: RequestHandler = async (req, res, next) => {
+    try {
+        const { scheduleId, handleType } = await Joi.object({
+            scheduleId: Joi.string().required(),
+            handleType: Joi.string().required(),
+        }).validateAsync(req.params);
+        await scheduleService.handleScheduleHistory({
+            owner: req.user.uid,
+            scheduleId,
+            scheduleHistoryState: handleType.toUpperCase(),
+        });
+        res.sendStatus(200);
+    } catch (err) {
+        next(err);
+    }
+};
