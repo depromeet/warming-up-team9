@@ -18,8 +18,8 @@ function TodayTaskList({ schedules, className }: Props) {
       <Head>
         <HeadCell flex={1}>Task 내용 / 할당 블록(시간)</HeadCell>
         <HeadCell fixedWidth={106}>소요시간</HeadCell>
-        <HeadCell fixedWidth={78}>시작</HeadCell>
-        <HeadCell fixedWidth={68}>완료</HeadCell>
+        <HeadCell fixedWidth={55}>시작</HeadCell>
+        <HeadCell fixedWidth={85}>완료</HeadCell>
       </Head>
       <List>
         {schedules.length === 0 ? (

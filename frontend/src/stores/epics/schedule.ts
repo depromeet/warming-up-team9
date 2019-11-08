@@ -33,7 +33,12 @@ const loadSchedulesEpic: Epic = (action$, state$) =>
 
 const reloadSchedulesEpic: Epic = action$ =>
   action$.pipe(
-    ofType(SCHEDULE_ACTION_TYPES.addTodaySchedule),
+    ofType(
+      SCHEDULE_ACTION_TYPES.addTodaySchedule,
+      SCHEDULE_ACTION_TYPES.playSchedule,
+      SCHEDULE_ACTION_TYPES.pauseSchedule,
+      SCHEDULE_ACTION_TYPES.completeSchedule
+    ),
     mapTo(loadTodaySchedulesAction())
   );
 
