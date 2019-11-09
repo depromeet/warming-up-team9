@@ -5,6 +5,7 @@ export const SCHEDULE_ACTION_TYPES = {
   loadTodaySchedulesComplete: 'schedule/load-today-schedules-complete',
   loadTodaySchedulesFail: 'schedule/load-today-schedules-fail',
   addTodaySchedule: 'schedule/add-schedule',
+  updateProcessTimeSec: 'schedule/update-process-time-sec',
   playSchedule: 'schedule/play-schedule',
   pauseSchedule: 'schedule/pause-schedule',
   completeSchedule: 'schedule/complete-schedule',
@@ -26,6 +27,11 @@ export const loadTodaySchedulesActionFail = (error: Error) => ({
 
 export const addTodayScheduleAction = () => ({
   type: SCHEDULE_ACTION_TYPES.addTodaySchedule,
+});
+
+export const updateProcessTimeSecAction = (scheduleId: string, processTimeSec: number) => ({
+  type: SCHEDULE_ACTION_TYPES.updateProcessTimeSec,
+  payload: { scheduleId, processTimeSec },
 });
 
 export const playScheduleAction = () => ({

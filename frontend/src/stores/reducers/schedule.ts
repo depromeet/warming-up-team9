@@ -18,6 +18,8 @@ export function createInitialScheduleState(): ScheduleState {
 
 export function scheduleReducer(state = createInitialScheduleState(), action: any) {
   return produce(state, draft => {
+    let index: number;
+
     switch (action.type) {
       case SCHEDULE_ACTION_TYPES.loadTodaySchedules:
         draft.isLoading = true;
@@ -29,6 +31,13 @@ export function scheduleReducer(state = createInitialScheduleState(), action: an
         break;
       case SCHEDULE_ACTION_TYPES.loadTodaySchedulesFail:
         draft.isLoading = false;
+        break;
+      case SCHEDULE_ACTION_TYPES.updateProcessTimeSec:
+        index = state.todaySchedules.findIndex(s => s.scheduleId === action.payload.scheduleId);
+
+        if (index > -1) {
+          draft.todaySchedules[index].processTimeSec = action.payload.processTimeSec;
+        }
         break;
     }
   });

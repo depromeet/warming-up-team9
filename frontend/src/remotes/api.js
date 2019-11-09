@@ -50,10 +50,18 @@ export async function login(email, password) {
   return data.token;
 }
 
-export async function playScheduleAPI(scheduleId) {
-  await axios.post(`${API_ROOT}/users/me/schedules/${scheduleId}/start`);
+export async function playScheduleAPI(authToken, scheduleId) {
+  await axios.post(`${API_ROOT}/users/me/schedules/${scheduleId}/start`, null, {
+    headers: {
+      Authorization: authToken,
+    },
+  });
 }
 
-export async function completeScheduleAPI(scheduleId) {
-  await axios.post(`${API_ROOT}/users/me/schedules/${scheduleId}/done`);
+export async function completeScheduleAPI(authToken, scheduleId) {
+  await axios.post(`${API_ROOT}/users/me/schedules/${scheduleId}/done`, null, {
+    headers: {
+      Authorization: authToken,
+    },
+  });
 }
