@@ -7,6 +7,7 @@ export const SCHEDULE_ACTION_TYPES = {
   addTodaySchedule: 'schedule/add-schedule',
   updateProcessTimeSec: 'schedule/update-process-time-sec',
   playSchedule: 'schedule/play-schedule',
+  resumeSchedule: 'schedule/resume-schedule',
   pauseSchedule: 'schedule/pause-schedule',
   completeSchedule: 'schedule/complete-schedule',
 };
@@ -36,6 +37,10 @@ export const updateProcessTimeSecAction = (scheduleId: string, processTimeSec: n
 
 export const playScheduleAction = () => ({
   type: SCHEDULE_ACTION_TYPES.playSchedule,
+});
+
+export const resumeScheduleAction = () => ({
+  type: SCHEDULE_ACTION_TYPES.resumeSchedule,
 });
 
 export const pauseScheduleAction = () => ({

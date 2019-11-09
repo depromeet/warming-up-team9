@@ -37,7 +37,8 @@ const reloadSchedulesEpic: Epic = action$ =>
       SCHEDULE_ACTION_TYPES.addTodaySchedule,
       SCHEDULE_ACTION_TYPES.playSchedule,
       SCHEDULE_ACTION_TYPES.pauseSchedule,
-      SCHEDULE_ACTION_TYPES.completeSchedule
+      SCHEDULE_ACTION_TYPES.completeSchedule,
+      SCHEDULE_ACTION_TYPES.resumeSchedule
     ),
     mapTo(loadTodaySchedulesAction())
   );
