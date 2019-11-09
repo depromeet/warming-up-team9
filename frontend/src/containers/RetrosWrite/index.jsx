@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import styled from '@emotion/styled';
-import TaskForm from '../TaskForm';
+import RetrosForm from '../../components/RetrosForm';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../stores/selectors';
 import { useTodayTimer } from '../../hooks';
@@ -30,7 +30,7 @@ function RestrosWrite( {onButtonClick} ) {
         </Illustration>
       </Title>
       <SelectTask>
-        회고를 작성해주세요
+        <RetrosForm/>
       </SelectTask>
       <Bottom>
         <SkipButton onClick={onButtonClick}>안 할래요</SkipButton>
@@ -108,8 +108,8 @@ right: 5%;
 
 const SelectTask = styled.div`
   max-height: 287px;
-  grid-row: 6 / 9;
-  margin-left: 20%;
+  grid-row: 5 / 9;
+  margin-left: 5%;
   margin-bottom: 38px;
 `;
 
