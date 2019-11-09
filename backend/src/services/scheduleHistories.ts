@@ -21,7 +21,9 @@ export const addHistory = async (arg: ScheduleHistory) => {
         case ScheduleHistoryState.DONE: {
             if (
                 previousHistory.length < 1 ||
-                ![ScheduleHistoryState.START, ScheduleHistoryState.RESUME].includes(previousHistory[0].state)
+                ![ScheduleHistoryState.START, ScheduleHistoryState.RESUME, ScheduleHistoryState.STOP].includes(
+                    previousHistory[0].state,
+                )
             ) {
                 throw createHttpError(400, { code: 304, message: "시작하지 않은 Schedule" });
             }
