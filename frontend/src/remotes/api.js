@@ -58,6 +58,22 @@ export async function playScheduleAPI(authToken, scheduleId) {
   });
 }
 
+export async function resumeScheduleAPI(authToken, scheduleId) {
+  await axios.post(`${API_ROOT}/users/me/schedules/${scheduleId}/resume`, null, {
+    headers: {
+      Authorization: authToken,
+    },
+  });
+}
+
+export async function stopScheduleAPI(authToken, scheduleId) {
+  await axios.post(`${API_ROOT}/users/me/schedules/${scheduleId}/stop`, null, {
+    headers: {
+      Authorization: authToken,
+    },
+  });
+}
+
 export async function completeScheduleAPI(authToken, scheduleId) {
   await axios.post(`${API_ROOT}/users/me/schedules/${scheduleId}/done`, null, {
     headers: {

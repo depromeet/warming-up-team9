@@ -1,14 +1,20 @@
 import styled from '@emotion/styled';
-import pauseButton from './pause-button.svg';
 import range from 'lodash.range';
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Schedule } from '../../models/schedule';
-import { completeScheduleAction, playScheduleAction, updateProcessTimeSecAction } from '../../stores/actions/schedule';
+import { completeScheduleAPI, playScheduleAPI, stopScheduleAPI, resumeScheduleAPI } from '../../remotes/api';
+import {
+  completeScheduleAction,
+  pauseScheduleAction,
+  playScheduleAction,
+  resumeScheduleAction,
+  updateProcessTimeSecAction,
+} from '../../stores/actions/schedule';
 import { selectAuthToken } from '../../stores/selectors';
 import { parseToSpendTimeStr } from '../../utils/time';
+import pauseButton from './pause-button.svg';
 import playButton from './play-button.svg';
-import { playScheduleAPI, completeScheduleAPI } from '../../remotes/api';
 
 interface Props {
   schedule: Schedule;
@@ -40,13 +46,21 @@ function TodayTaskListItem({ schedule }: Props) {
   }, [schedule, dispatch]);
 
   const playSchedule = useCallback(async () => {
-    if (schedule.state !== 'READY') {
+    if (schedule.state === 'DONE') {
       return;
     }
 
     try {
-      await playScheduleAPI(authToken, schedule.scheduleId);
-      dispatch(playScheduleAction());
+      if (schedule.state === 'READY') {
+        await playScheduleAPI(authToken, schedule.scheduleId);
+        dispatch(playScheduleAction());
+      } else if (schedule.state === 'STOP') {
+        await resumeScheduleAPI(authToken, schedule.scheduleId);
+        dispatch(resumeScheduleAction());
+      } else if (schedule.state === 'PROCESSING') {
+        await stopScheduleAPI(authToken, schedule.scheduleId);
+        dispatch(pauseScheduleAction());
+      }
     } catch (error) {
       alert(error.message);
     }
