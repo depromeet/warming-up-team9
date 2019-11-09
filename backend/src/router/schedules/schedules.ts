@@ -14,7 +14,9 @@ export const addSchedule: RequestHandler = async (req, res, next) => {
         }).validateAsync(req.body);
 
         const date = moment(scheduleDate)
+            .utcOffset(0)
             .startOf("day")
+            .add(1, "day")
             .toDate();
 
         await scheduleService.addSchedule({ owner: req.user.uid, taskId, estimatedHour, scheduleDate: date });
