@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
-// import pauseButton from './pause-button.svg';
+import pauseButton from './pause-button.svg';
 import range from 'lodash.range';
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Schedule } from '../../models/schedule';
-import { completeScheduleAction, playScheduleAction } from '../../stores/actions/schedule';
+import { completeScheduleAction, playScheduleAction, updateProcessTimeSecAction } from '../../stores/actions/schedule';
+import { selectAuthToken } from '../../stores/selectors';
 import { parseToSpendTimeStr } from '../../utils/time';
 import playButton from './play-button.svg';
 import { playScheduleAPI, completeScheduleAPI } from '../../remotes/api';
@@ -16,21 +17,27 @@ interface Props {
 function TodayTaskListItem({ schedule }: Props) {
   const dispatch = useDispatch();
 
+  const authToken = useSelector(selectAuthToken);
   const [processTimeSec, setProcessTimeSec] = useState(schedule.processTimeSec);
   const spendTimeStr = useMemo(() => parseToSpendTimeStr(processTimeSec), [processTimeSec]);
-  const spendHours = useMemo(() => processTimeSec % (60 * 60), [processTimeSec]);
+  const spendHours = useMemo(() => Math.floor(processTimeSec / (60 * 60)), [processTimeSec]);
 
   useEffect(() => {
     if (schedule.state === 'PROCESSING') {
       const id = setInterval(() => {
-        setProcessTimeSec(prev => prev + 1);
+        setProcessTimeSec(prev => {
+          const update = prev + 1;
+
+          dispatch(updateProcessTimeSecAction(schedule.scheduleId, update));
+          return update;
+        });
       }, 1000);
 
       return () => {
         clearInterval(id);
       };
     }
-  }, [schedule]);
+  }, [schedule, dispatch]);
 
   const playSchedule = useCallback(async () => {
     if (schedule.state !== 'READY') {
@@ -38,12 +45,12 @@ function TodayTaskListItem({ schedule }: Props) {
     }
 
     try {
-      await playScheduleAPI(schedule.taskId);
+      await playScheduleAPI(authToken, schedule.scheduleId);
       dispatch(playScheduleAction());
     } catch (error) {
       alert(error.message);
     }
-  }, [schedule, dispatch]);
+  }, [authToken, schedule, dispatch]);
 
   const completeSchedule = useCallback(async () => {
     if (schedule.state !== 'PROCESSING') {
@@ -51,12 +58,12 @@ function TodayTaskListItem({ schedule }: Props) {
     }
 
     try {
-      await completeScheduleAPI(schedule.taskId);
+      await completeScheduleAPI(authToken, schedule.scheduleId);
       dispatch(completeScheduleAction());
     } catch (error) {
       alert(error.message);
     }
-  }, [schedule, dispatch]);
+  }, [authToken, schedule, dispatch]);
 
   return (
     <Item>
@@ -72,8 +79,8 @@ function TodayTaskListItem({ schedule }: Props) {
         <Text>{spendTimeStr}</Text>
       </Cell>
       <Cell fixedWidth={55}>
-        <IconButton aria-label="시작" onClick={playSchedule}>
-          <img src={playButton} alt="" aria-hidden={true} />
+        <IconButton aria-label={schedule.state === 'PROCESSING' ? '멈추기' : '시작하기'} onClick={playSchedule}>
+          <img src={schedule.state === 'PROCESSING' ? pauseButton : playButton} alt="" aria-hidden={true} />
         </IconButton>
       </Cell>
       <Cell fixedWidth={85}>
