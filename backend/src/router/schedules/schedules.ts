@@ -27,9 +27,13 @@ export const addSchedule: RequestHandler = async (req, res, next) => {
 export const getSchedule: RequestHandler = async (req, res, next) => {
     try {
         const targetDate = await Joi.string().validateAsync(req.params.targetDate);
+        console.log(targetDate);
         const date = moment(targetDate)
+            .utcOffset(0)
             .startOf("day")
+            .add(1, "day")
             .toDate();
+        console.log(date);
         const schedules = await scheduleService.getSchedule({ owner: req.user.uid, date });
         res.json(schedules);
     } catch (err) {
