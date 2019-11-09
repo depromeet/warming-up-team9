@@ -104,7 +104,7 @@ export const handleScheduleHistory = async (args: {
         owner,
         scheduleId,
         taskId: schedule.taskId,
-    })) as ScheduleHistoryDocument;
+    }).sort({ createdAt: -1 })) as ScheduleHistoryDocument;
 
     switch (scheduleHistoryState) {
         case ScheduleHistoryState.START: {
@@ -118,7 +118,9 @@ export const handleScheduleHistory = async (args: {
             if (schedule.state !== ScheduleStates.PROCESSING) {
                 throw createHttpError(400, { code: 307, message: "이미 시작한 스케줄" });
             }
-            const processTimeSec = (createdAt.valueOf() - lastScheduleHistory.createdAt.valueOf()) / 1000;
+            const processTimeSec = parseInt(
+                ((createdAt.valueOf() - lastScheduleHistory.createdAt.valueOf()) / 1000).toFixed(0),
+            );
             schedule.processTimeSec += processTimeSec;
             schedule.state = ScheduleStates.DONE;
             break;
@@ -133,7 +135,10 @@ export const handleScheduleHistory = async (args: {
             if (schedule.state !== ScheduleStates.PROCESSING) {
                 throw createHttpError(400, { code: 309, message: "중지 할 수 없는 상태" });
             }
-            const processTimeSec = (createdAt.valueOf() - lastScheduleHistory.createdAt.valueOf()) / 1000;
+
+            const processTimeSec = parseInt(
+                ((createdAt.valueOf() - lastScheduleHistory.createdAt.valueOf()) / 1000).toFixed(0),
+            );
             schedule.processTimeSec += processTimeSec;
             break;
         }
@@ -150,4 +155,12 @@ export const handleScheduleHistory = async (args: {
         createdAt,
     });
     await schedule.save();
+};
+
+export const getTaskTimeSec = async (arg: { owner: string; taskId: string }) => {
+    const { owner, taskId } = arg;
+    const schedules = (await db.Schedules.find({ owner, taskId })) as ScheduleDocument[];
+    return schedules.reduce((memo, schedule) => {
+        return (memo += schedule.processTimeSec);
+    }, 0);
 };
