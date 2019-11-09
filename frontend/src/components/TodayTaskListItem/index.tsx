@@ -1,36 +1,86 @@
 import styled from '@emotion/styled';
-import React, { memo, useMemo } from 'react';
+// import pauseButton from './pause-button.svg';
+import range from 'lodash.range';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Schedule } from '../../models/schedule';
+import { completeScheduleAction, playScheduleAction } from '../../stores/actions/schedule';
 import { parseToSpendTimeStr } from '../../utils/time';
 import playButton from './play-button.svg';
-// import pauseButton from './pause-button.svg';
+import { playScheduleAPI, completeScheduleAPI } from '../../remotes/api';
 
 interface Props {
   schedule: Schedule;
 }
 
 function TodayTaskListItem({ schedule }: Props) {
-  const spendTimeStr = useMemo(() => parseToSpendTimeStr(schedule.processTimeSec), [schedule.processTimeSec]);
+  const dispatch = useDispatch();
+
+  const [processTimeSec, setProcessTimeSec] = useState(schedule.processTimeSec);
+  const spendTimeStr = useMemo(() => parseToSpendTimeStr(processTimeSec), [processTimeSec]);
+  const spendHours = useMemo(() => processTimeSec % (60 * 60), [processTimeSec]);
+
+  useEffect(() => {
+    if (schedule.state === 'PROCESSING') {
+      const id = setInterval(() => {
+        setProcessTimeSec(prev => prev + 1);
+      }, 1000);
+
+      return () => {
+        clearInterval(id);
+      };
+    }
+  }, [schedule]);
+
+  const playSchedule = useCallback(async () => {
+    if (schedule.state !== 'READY') {
+      return;
+    }
+
+    try {
+      await playScheduleAPI(schedule.taskId);
+      dispatch(playScheduleAction());
+    } catch (error) {
+      alert(error.message);
+    }
+  }, [schedule, dispatch]);
+
+  const completeSchedule = useCallback(async () => {
+    if (schedule.state !== 'PROCESSING') {
+      return;
+    }
+
+    try {
+      await completeScheduleAPI(schedule.taskId);
+      dispatch(completeScheduleAction());
+    } catch (error) {
+      alert(error.message);
+    }
+  }, [schedule, dispatch]);
 
   return (
     <Item>
       <Cell flex={1}>
         <Text>{schedule.title}</Text>
         <Blocks>
-          <Block />
-          <Block />
-          <Block completed={true} />
+          {range(schedule.estimatedHour).map((i: number) => (
+            <Block key={`estimate-${i}`} state={i < spendHours ? 'spend' : undefined} />
+          ))}
         </Blocks>
       </Cell>
       <Cell fixedWidth={106}>
         <Text>{spendTimeStr}</Text>
       </Cell>
-      <Cell fixedWidth={78}>
-        <IconButton aria-label="시작">
+      <Cell fixedWidth={55}>
+        <IconButton aria-label="시작" onClick={playSchedule}>
           <img src={playButton} alt="" aria-hidden={true} />
         </IconButton>
       </Cell>
-      <Cell fixedWidth={68} />
+      <Cell fixedWidth={85}>
+        <CompleteButton disabled={schedule.state === 'DONE'} onClick={completeSchedule}>
+          {schedule.state === 'DONE' ? 'Task 완료됨' : 'Task 완료'}
+        </CompleteButton>
+      </Cell>
     </Item>
   );
 }
@@ -66,11 +116,17 @@ const Text = styled.span`
   overflow: hidden;
 `;
 
-const Block = styled.div<{ completed?: boolean }>`
+const stateColor = {
+  spend: '#ff5001',
+  done: '#01e165',
+  exceed: '#61676f',
+};
+
+const Block = styled.div<{ state?: 'spend' | 'done' | 'exceed' }>`
   width: 20.4px;
   height: 20.4px;
   border-radius: 3px;
-  background-color: ${props => (props.completed ? '#01e165' : '#ff5001')};
+  background-color: ${props => (props.state ? stateColor[props.state] : '#ffe8de')};
 `;
 
 const Blocks = styled.div`
@@ -100,5 +156,27 @@ const IconButton = styled.button`
     display: block;
     width: 100%;
     height: 100%;
+  }
+`;
+
+const CompleteButton = styled.button`
+  height: 32px;
+  border-radius: 5px;
+  background-color: #ff5001;
+  line-height: 32px;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: -0.56px;
+  color: #ffffff;
+  outline: 0;
+  cursor: pointer;
+  margin: 0;
+  padding: 0 12px;
+  text-align: center;
+  border: none;
+  box-sizing: border-box;
+
+  &:disabled {
+    background-color: #eceff2;
   }
 `;
