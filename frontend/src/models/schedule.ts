@@ -1,4 +1,4 @@
-export type ScheduleStatus = 'PROCESSING' | 'READY' | 'DONE';
+export type ScheduleStatus = 'PROCESSING' | 'READY' | 'STOP' | 'DONE';
 
 export interface Schedule {
   readonly taskId: string;
