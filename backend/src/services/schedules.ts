@@ -115,8 +115,8 @@ export const handleScheduleHistory = async (args: {
             break;
         }
         case ScheduleHistoryState.DONE: {
-            if (schedule.state !== ScheduleStates.PROCESSING) {
-                throw createHttpError(400, { code: 307, message: "이미 시작한 스케줄" });
+            if ([ScheduleStates.PROCESSING.toString(), ScheduleStates.DONE.toString()].includes(schedule.state)) {
+                throw createHttpError(400, { code: 307, message: "종료 할 수 없는 상태" });
             }
             const processTimeSec = parseInt(
                 ((createdAt.valueOf() - lastScheduleHistory.createdAt.valueOf()) / 1000).toFixed(0),
@@ -139,6 +139,7 @@ export const handleScheduleHistory = async (args: {
             const processTimeSec = parseInt(
                 ((createdAt.valueOf() - lastScheduleHistory.createdAt.valueOf()) / 1000).toFixed(0),
             );
+            schedule.state = ScheduleStates.STOP;
             schedule.processTimeSec += processTimeSec;
             break;
         }

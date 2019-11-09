@@ -5,6 +5,7 @@ export enum ScheduleStates {
     "READY" = "READY",
     "PROCESSING" = "PROCESSING",
     "DONE" = "DONE",
+    "STOP" = "STOP",
 }
 
 export type Schedules = {
@@ -30,7 +31,7 @@ const schema = new mongoose.Schema(
         review: { type: String },
         state: {
             type: String,
-            enum: [ScheduleStates.READY, ScheduleStates.DONE, ScheduleStates.PROCESSING],
+            enum: [ScheduleStates.READY, ScheduleStates.DONE, ScheduleStates.PROCESSING, ScheduleStates.STOP],
             default: ScheduleStates.READY,
         },
     },
