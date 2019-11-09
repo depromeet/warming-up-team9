@@ -40,7 +40,7 @@ function TodayTaskListItem({ schedule }: Props) {
   }, [schedule, dispatch]);
 
   const playSchedule = useCallback(async () => {
-    if (schedule.state !== 'READY') {
+    if (schedule.state === 'DONE') {
       return;
     }
 
