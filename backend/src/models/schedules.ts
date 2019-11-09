@@ -16,7 +16,7 @@ export type Schedules = {
     scheduleDate: Date;
     review: string;
     createdAt: Date;
-    state: string;
+    state: ScheduleStates;
 };
 
 export type ScheduleDocument = mongoose.Document & Schedules;
