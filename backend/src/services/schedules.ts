@@ -126,7 +126,7 @@ export const handleScheduleHistory = async (args: {
             break;
         }
         case ScheduleHistoryState.RESUME: {
-            if (schedule.state !== ScheduleStates.PROCESSING) {
+            if (schedule.state !== ScheduleStates.STOP) {
                 throw createHttpError(400, { code: 308, message: "재시작 할 수 없는 상태" });
             }
             break;
