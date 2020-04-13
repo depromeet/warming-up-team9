@@ -4,10 +4,10 @@ import createHttpError = require("http-errors");
 
 export const addTask = async (args: { owner: string; title: string }) => {
     const { owner, title } = args;
-    const task = await new db.Tasks({
+    const task = (await new db.Tasks({
         owner,
         title,
-    });
+    })) as TasksDocument;
     await task.save();
     return task;
 };

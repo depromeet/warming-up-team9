@@ -3,17 +3,20 @@ import { Tasks } from "./tasks";
 
 export enum ScheduleStates {
     "READY" = "READY",
-    "PENDING" = "PENDING",
+    "PROCESSING" = "PROCESSING",
     "DONE" = "DONE",
+    "STOP" = "STOP",
 }
 
 export type Schedules = {
     taskId: string | Tasks;
     owner: string;
     estimatedHour: number;
-    playedTimeSec: number;
+    processTimeSec: number;
     scheduleDate: Date;
+    review: string;
     createdAt: Date;
+    state: ScheduleStates;
 };
 
 export type ScheduleDocument = mongoose.Document & Schedules;
@@ -23,12 +26,12 @@ const schema = new mongoose.Schema(
         taskId: { type: mongoose.Schema.Types.ObjectId, ref: "Tasks" },
         owner: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
         estimatedHour: { type: Number, min: 1, max: 12 },
-        playedTimeSec: { type: Number, default: 0 },
+        processTimeSec: { type: Number, default: 0 },
         scheduleDate: { type: Date },
         review: { type: String },
         state: {
             type: String,
-            enum: [ScheduleStates.READY, ScheduleStates.DONE, ScheduleStates.PENDING],
+            enum: [ScheduleStates.READY, ScheduleStates.DONE, ScheduleStates.PROCESSING, ScheduleStates.STOP],
             default: ScheduleStates.READY,
         },
     },
