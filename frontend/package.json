@@ -1,22 +1,33 @@
 {
-  "name": "frontend",
+  "name": "@jjayojjayo/frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@emotion/core": "^10.0.21",
     "@emotion/css": "^10.0.14",
+    "@emotion/styled": "^10.0.23",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.12",
     "@types/react": "16.9.5",
     "@types/react-dom": "16.9.1",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
+    "axios": "^0.19.0",
+    "classnames": "^2.2.6",
+    "date-fns": "^2.6.0",
+    "immer": "^4.0.2",
+    "lodash.range": "^3.2.0",
+    "react": "16.8.3",
+    "react-dom": "16.8.3",
     "react-redux": "^7.1.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
+    "react-spring": "^8.0.27",
     "redux": "^4.0.4",
     "redux-observable": "^1.2.0",
+    "reselect": "^4.0.0",
     "rxjs": "^6.5.3",
-    "typescript": "3.6.4"
+    "typesafe-actions": "^4.4.2",
+    "typescript": "3.6.4",
+    "validator": "^12.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -40,8 +51,13 @@
     ]
   },
   "devDependencies": {
+    "@types/classnames": "^2.2.9",
+    "@types/lodash.range": "^3.2.6",
+    "@types/react-redux": "^7.1.5",
+    "@types/react-router-dom": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^2.3.3",
-    "@typescript-eslint/parser": "^2.3.3",
+    "@typescript-eslint/parser": "^2.5.0",
+    "babel-plugin-emotion": "^10.0.23",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
     "eslint-import-resolver-typescript": "^2.0.0",
@@ -49,6 +65,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^2.1.2",
+    "node-sass": "^4.13.0",
     "prettier": "^1.18.2"
   }
 }

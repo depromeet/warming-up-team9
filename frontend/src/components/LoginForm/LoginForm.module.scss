@@ -1,0 +1,29 @@
+.login-box{
+  width: 42%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  font-weight: 300;
+  padding-right: 50px;
+
+  .carrot{
+    width: 93px;
+    height: 93px;
+    margin: 70px auto;
+    margin-top: 18%;
+  }
+  .form-contents{
+    width: 55%;
+    margin: 20px auto;
+  }
+  .sign-btn{
+    width: 55%;
+    margin: 20px auto;
+  }
+  .first-btn{
+    margin-top: 55px; 
+  }
+}
